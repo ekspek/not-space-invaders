@@ -1,3 +1,4 @@
+local world = require 'world'
 local entities = require 'entities'
 local bullet = require 'entities.bullet'
 
@@ -18,6 +19,8 @@ function love.update(dt)
 			i = i + 1
 		end
 	end
+
+	world:update(dt)
 end
 
 function love.draw(dt)
