@@ -2,8 +2,9 @@
 *~
 *.swp
 
-# Sprites (for now)
-sprites/
+# GIMP sprite sheet
+sprites/spritesheet_16x16.png
+sprites/spritesheet_16x16.xcf
 
 # Compiled Lua sources
 luac.out
