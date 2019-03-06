@@ -13,8 +13,10 @@ return function(x,y)
 	entity.quads = {}
 
 	entity.body = love.physics.newBody(world, x, y, 'dynamic')
-	entity.body:setMass(10)
+	entity.body:setMass(32)
 	entity.body:setLinearVelocity(0,0)
+	entity.body:setLinearDamping(1)
+	entity.body:setAngularDamping(1)
 	entity.shape = love.physics.newRectangleShape(entity.w, entity.h)
 	entity.fixture = love.physics.newFixture(entity.body, entity.shape)
 	entity.fixture:setUserData(entity)
@@ -40,6 +42,13 @@ return function(x,y)
 		end
 		if ymin < -border or ymax > love.graphics.getHeight() + border then
 			self.remove = true
+		end
+		
+		local dx, dy = self.body:getLinearVelocity()
+		local dv = math.abs(dx) + math.abs(dy)
+		
+		if dv < 2 and self.body:getAngularVelocity() < 0.1 then
+			self.body:setAngle(0)
 		end
 	end
 
