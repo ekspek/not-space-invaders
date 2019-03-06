@@ -53,6 +53,8 @@ function love.update(dt)
 	end
 
 	world:update(dt)
+	
+	state.second = state.second + dt
 end
 
 function love.draw(dt)
