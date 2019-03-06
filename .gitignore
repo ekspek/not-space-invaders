@@ -1,5 +1,6 @@
 # Vim auxiliary files
 *~
+*.swp
 
 # Sprites (for now)
 sprites/
