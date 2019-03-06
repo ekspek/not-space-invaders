@@ -1,4 +1,6 @@
+local state = require 'state'
 local world = require 'world'
+local input = require 'input'
 local entities = require 'entities'
 local bullet = require 'entities.bullet'
 
@@ -7,11 +9,35 @@ function love.load()
 end
 
 function love.update(dt)
+	local hasinvaders = false
+
 	local i = 1
 	while i <= #entities do
 		local entity = entities[i]
 
 		if entity.update then entity:update(dt) end
+
+		-- Firing mechanism
+		--
+		-- Create a bullet at the player's position if the fire button
+		-- has been pressed and the current selected entity is the player
+		-- This was necessary to get the player's position
+		if entity.id == 'player' then
+			if state.player.firebuffer then
+				table.insert(entities, bullet(entity.x + (entity.w / 2) - 1, entity.y))
+				state.player.firebuffer = false
+			end
+
+			---[[ debug test option
+			if state.player.firehold then
+				table.insert(entities, bullet(entity.x + (entity.w / 2) - 1, entity.y))
+			end
+			--]]
+		end
+
+		if entity.id == 'invader' then
+			hasinvaders = true
+		end
 
 		if entity.remove then
 			table.remove(entities, i)
@@ -30,18 +56,9 @@ function love.draw(dt)
 end
 
 function love.keypressed(key)
-	if key == 'escape' then
-		love.event.quit()
-	end
-
-	if key == 'space' then
-		for _, entity in ipairs(entities) do
-			if entity.id then
-				if entity.id == 'player' then
-					table.insert(entities, bullet(entity.x + (entity.w / 2) - 1, entity.y))
-				end
-			end
-		end
-	end
+	input.press(key)
 end
 
+function love.keyreleased(key)
+	input.release(key)
+end
