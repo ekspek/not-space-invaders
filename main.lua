@@ -1,54 +1,8 @@
-local player = {
-	w = 32,
-	h = 16,
-	speed = 300, -- pixels per second
-}
+local player = require 'entities.player'
+local invader = require 'entities.invader'
+local bullet = require 'entities.bullet'
 
-player.x = love.graphics.getWidth() / 2 - (player.w / 2)
-player.y = love.graphics.getHeight() * 0.8
-
-player.draw = function(self)
-	love.graphics.setColor(1,1,1,1)
-	love.graphics.rectangle('fill', player.x, player.y, player.w, player.h)
-	love.graphics.setColor(love.graphics.getBackgroundColor())
-	love.graphics.rectangle('fill', player.x, player.y, player.w, player.h / 2)
-	love.graphics.setColor(1,1,1,1)
-	love.graphics.rectangle('fill', player.x + (player.w / 2) - 2, player.y, 4, player.h)
-end
-
-local invader = {
-	w = 32,
-	h = 16,
-}
-
-invader.draw = function(self,x,y)
-	love.graphics.setColor(1,1,1,1)
-	love.graphics.rectangle('fill', x, y, invader.w, invader.h)
-end
-
-player.fire = function()
-	local bullet = {
-		w = 2,
-		h = 8,
-		speed = 300, -- pixels per second
-	}
-
-	bullet.x = player.x + (player.w / 2) - (bullet.w / 2)
-	bullet.y = player.y - bullet.h
-
-	bullet.draw = function(self)
-		love.graphics.setColor(1,1,1,1)
-		love.graphics.rectangle('fill', bullet.x, bullet.y, bullet.w, bullet.h)
-	end
-
-	bullet.update = function(self, dt)
-		bullet.y = bullet.y - bullet.speed * dt
-	end
-
-	return bullet
-end
-
-bullets = {}
+local bullets = {}
 
 function love.load()
 	love.graphics.setBackgroundColor(0.1, 0.1, 0.1)
@@ -69,8 +23,17 @@ function love.update(dt)
 		end
 	end
 
-	for _, bullet in ipairs(bullets) do
+	local i = 1
+	while i <= #bullets do
+		local bullet = bullets[i]
+
 		if bullet.update then bullet:update(dt) end
+
+		if bullet.offscreen then
+			table.remove(bullets, i)
+		else
+			i = i + 1
+		end
 	end
 end
 
@@ -94,7 +57,7 @@ function love.keypressed(key)
 	end
 
 	if key == 'space' then
-		table.insert(bullets, player.fire())
+		table.insert(bullets, bullet(player.x + (player.w / 2) - 1, player.y))
 	end
 end
 
