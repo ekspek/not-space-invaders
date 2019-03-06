@@ -1,4 +1,5 @@
 local world = require 'world'
+local state = require 'state'
 
 return function(x,y)
 	local entity = {
@@ -45,8 +46,11 @@ return function(x,y)
 	entity.draw = function(self)
 		local x, y = self.body:getWorldPoints(self.shape:getPoints())
 		love.graphics.setColor(1,1,1,1)
-		--love.graphics.polygon('fill', self.body:getWorldPoints(self.shape:getPoints()))
-		love.graphics.draw(self.image, self.quads[1], x, y, self.body:getAngle(), 2, 2)
+		if math.floor(state.second) % 2 == 0 then
+			love.graphics.draw(self.image, self.quads[1], x, y, self.body:getAngle(), 2, 2)
+		else
+			love.graphics.draw(self.image, self.quads[2], x, y, self.body:getAngle(), 2, 2)
+		end
 	end
 
 	return entity
