@@ -5,7 +5,13 @@ local entities = require 'entities'
 local bullet = require 'entities.bullet'
 
 function love.load()
-	love.graphics.setBackgroundColor(0.1, 0.1, 0.1)
+	love.graphics.setDefaultFilter('linear', 'nearest', 0)
+	
+	love.graphics.setBackgroundColor(0,0,0)
+	
+	for _, entity in ipairs(entities) do
+		if entity.load then entity:load() end
+	end
 end
 
 function love.update(dt)

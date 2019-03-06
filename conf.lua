@@ -1,8 +1,8 @@
 function love.conf(t)
 	t.title = "Space Invaders"
 	t.console = true
-	t.window.width = 800
-	t.window.height = 600
+	t.window.width = 224 * 2
+	t.window.height = 256 * 2
 
 	t.modules.joystick = false
 end

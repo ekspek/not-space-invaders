@@ -5,9 +5,11 @@ return function(x,y)
 		id = 'invader',
 		x = x,
 		y = y,
-		w = 32,
+		w = 22,
 		h = 16,
 	}
+	
+	entity.quads = {}
 
 	entity.body = love.physics.newBody(world, x, y, 'dynamic')
 	entity.body:setMass(10)
@@ -15,6 +17,12 @@ return function(x,y)
 	entity.shape = love.physics.newRectangleShape(entity.w, entity.h)
 	entity.fixture = love.physics.newFixture(entity.body, entity.shape)
 	entity.fixture:setUserData(entity)
+	
+	entity.load = function(self)
+		self.image = love.graphics.newImage("sprites/inv2.png")
+		table.insert(self.quads, love.graphics.newQuad(0, 0, 11, 8, self.image:getDimensions()))
+		table.insert(self.quads, love.graphics.newQuad(16, 0, 11, 8, self.image:getDimensions()))
+	end
 
 	entity.update = function(self, dt)
 		-- Check if outside of playable area
@@ -35,8 +43,10 @@ return function(x,y)
 	end
 
 	entity.draw = function(self)
+		local x, y = self.body:getWorldPoints(self.shape:getPoints())
 		love.graphics.setColor(1,1,1,1)
-		love.graphics.polygon('fill', self.body:getWorldPoints(self.shape:getPoints()))
+		--love.graphics.polygon('fill', self.body:getWorldPoints(self.shape:getPoints()))
+		love.graphics.draw(self.image, self.quads[1], x, y, self.body:getAngle(), 2, 2)
 	end
 
 	return entity
