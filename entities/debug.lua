@@ -12,7 +12,7 @@ return function()
     entity.draw = function(self)
         love.graphics.setColor(1,1,1,1)
         love.graphics.print("fps = " .. self.fps)
-        love.graphics.print("second = " .. state.second, 0, 10)
+        love.graphics.print("second = " .. math.floor(state.second), 0, 10)
     end
     
     return entity

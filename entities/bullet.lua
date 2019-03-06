@@ -7,12 +7,12 @@ return function(x,y)
 		y = y,
 		w = 2,
 		h = 8,
-		speed = 300,
+		speed = 500,
 		remove = false,
 	}
 
 	entity.body = love.physics.newBody(world, x, y, 'dynamic')
-	entity.body:setMass(10)
+	entity.body:setMass(32)
 	entity.body:setLinearVelocity(0, -entity.speed)
 	entity.shape = love.physics.newRectangleShape(entity.w, entity.h)
 	entity.fixture = love.physics.newFixture(entity.body, entity.shape)
@@ -39,6 +39,10 @@ return function(x,y)
 	entity.draw = function(self)
 		love.graphics.setColor(1,1,1,1)
 		love.graphics.polygon('fill', self.body:getWorldPoints(self.shape:getPoints()))
+	end
+	
+	entity.postSolve = function(self)
+		self.remove = true
 	end
 
 	--entity.getWidth = function(self) return entity.w end
