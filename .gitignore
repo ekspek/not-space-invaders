@@ -1,3 +1,9 @@
+# Vim auxiliary files
+*~
+
+# Sprites (for now)
+sprites/
+
 # Compiled Lua sources
 luac.out
 
