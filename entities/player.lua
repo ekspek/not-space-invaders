@@ -1,4 +1,4 @@
-return function(x, y)
+return function(x,y)
 	local entity = {
 		id = 'player',
 		x = x,
