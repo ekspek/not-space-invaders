@@ -27,11 +27,11 @@ return function(x,y)
 	end
 
 	entity.draw = function(self)
-		love.graphics.setColor(1,1,1,1)
+		love.graphics.setColor(0,1,0,1)
 		love.graphics.rectangle('fill', self.x, self.y, self.w, self.h)
 		love.graphics.setColor(love.graphics.getBackgroundColor())
 		love.graphics.rectangle('fill', self.x, self.y, self.w, self.h / 2)
-		love.graphics.setColor(1,1,1,1)
+		love.graphics.setColor(0,1,0,1)
 		love.graphics.rectangle('fill', self.x + (self.w / 2) - 2, self.y, 4, self.h)
 	end
 
