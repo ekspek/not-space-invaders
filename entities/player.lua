@@ -1,3 +1,5 @@
+local state = require 'state'
+
 return function(x,y)
 	local entity = {
 		id = 'player',
@@ -9,13 +11,13 @@ return function(x,y)
 	}
 
 	entity.update = function(self, dt)
-		if love.keyboard.isDown('left') then
+		if state.player.left then
 			if self.x - self.speed * dt > 0 then
 				self.x = self.x - self.speed * dt
 			else
 				self.x = 0
 			end
-		elseif love.keyboard.isDown('right') then
+		elseif state.player.right then
 			if self.x + self.speed * dt < love.graphics.getWidth() - self.w then
 				self.x = self.x + self.speed * dt
 			else
