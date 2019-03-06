@@ -1,11 +1,16 @@
-local invader = {
-	w = 32,
-	h = 16,
-}
+return function(x, y)
+	local entity = {
+		id = 'invader'
+		x = x,
+		y = y,
+		w = 32,
+		h = 16,
+	}
 
-invader.draw = function(self,x,y)
-	love.graphics.setColor(1,1,1,1)
-	love.graphics.rectangle('fill', x, y, invader.w, invader.h)
+	entity.draw = function(self)
+		love.graphics.setColor(1,1,1,1)
+		love.graphics.rectangle('fill', self.x, self.y, self.w, self.h)
+	end
+
+	return entity
 end
-
-return invader

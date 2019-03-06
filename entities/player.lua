@@ -1,19 +1,37 @@
-local player = {
-	w = 32,
-	h = 16,
-	speed = 300, -- pixels per second
-}
+return function(x, y)
+	local entity = {
+		id = 'player',
+		x = x,
+		y = y,
+		w = 32,
+		h = 16,
+		speed = 300, -- pixels per second
+	}
 
-player.x = love.graphics.getWidth() / 2 - (player.w / 2)
-player.y = love.graphics.getHeight() * 0.8
+	entity.update = function(self, dt)
+		if love.keyboard.isDown('left') then
+			if self.x - self.speed * dt > 0 then
+				self.x = self.x - self.speed * dt
+			else
+				self.x = 0
+			end
+		elseif love.keyboard.isDown('right') then
+			if self.x + self.speed * dt < love.graphics.getWidth() - self.w then
+				self.x = self.x + self.speed * dt
+			else
+				self.x = love.graphics.getWidth() - self.w
+			end
+		end
+	end
 
-player.draw = function(self)
-	love.graphics.setColor(1,1,1,1)
-	love.graphics.rectangle('fill', player.x, player.y, player.w, player.h)
-	love.graphics.setColor(love.graphics.getBackgroundColor())
-	love.graphics.rectangle('fill', player.x, player.y, player.w, player.h / 2)
-	love.graphics.setColor(1,1,1,1)
-	love.graphics.rectangle('fill', player.x + (player.w / 2) - 2, player.y, 4, player.h)
+	entity.draw = function(self)
+		love.graphics.setColor(1,1,1,1)
+		love.graphics.rectangle('fill', self.x, self.y, self.w, self.h)
+		love.graphics.setColor(love.graphics.getBackgroundColor())
+		love.graphics.rectangle('fill', self.x, self.y, self.w, self.h / 2)
+		love.graphics.setColor(1,1,1,1)
+		love.graphics.rectangle('fill', self.x + (self.w / 2) - 2, self.y, 4, self.h)
+	end
+
+	return entity
 end
-
-return player
