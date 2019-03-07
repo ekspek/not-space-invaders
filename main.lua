@@ -15,8 +15,7 @@ function love.load()
 end
 
 function love.update(dt)
-	local hasinvaders = false
-
+	state.invadercount = 0
 	local i = 1
 	while i <= #entities do
 		local entity = entities[i]
@@ -30,19 +29,19 @@ function love.update(dt)
 		-- This was necessary to get the player's position
 		if entity.id == 'player' then
 			if state.player.firebuffer then
-				table.insert(entities, bullet(entity.x + (entity.w / 2) - 1, entity.y))
+				table.insert(entities, bullet(math.floor(entity.x + (entity.w / 2)), entity.y + 5))
 				state.player.firebuffer = false
 			end
 
 			---[[ debug test option
 			if state.player.firehold then
-				table.insert(entities, bullet(entity.x + (entity.w / 2) - 1, entity.y))
+				table.insert(entities, bullet(math.floor(entity.x + (entity.w / 2)), entity.y + 5))
 			end
 			--]]
 		end
 
-		if entity.id == 'invader' then
-			hasinvaders = true
+		if entity.id == 'invader1' or entity.id == 'invader2' or entity.id == 'invader3' then
+			state.invadercount = state.invadercount + 1
 		end
 
 		if entity.remove then
@@ -52,9 +51,11 @@ function love.update(dt)
 		end
 	end
 
+	state:update(dt)
 	world:update(dt)
 	
-	state.second = state.second + dt
+	-- 30FPS mode
+	--love.timer.sleep(1/30)
 end
 
 function love.draw(dt)

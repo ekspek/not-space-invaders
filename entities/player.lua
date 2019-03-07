@@ -5,10 +5,19 @@ return function(x,y)
 		id = 'player',
 		x = x,
 		y = y,
-		w = 32,
-		h = 16,
+		w = 13 * 2,
+		h = 8 * 2,
 		speed = 300, -- pixels per second
 	}
+
+	entity.quads_death = {}
+
+	entity.load = function(self)
+		self.image = love.graphics.newImage("sprites/player.png")
+		self.image_death = love.graphics.newImage("sprites/player_death.png")
+		table.insert(self.quads_death, love.graphics.newQuad(0, 0, 13, 8, self.image_death:getDimensions()))
+		table.insert(self.quads_death, love.graphics.newQuad(16, 0, 13, 8, self.image_death:getDimensions()))
+	end
 
 	entity.update = function(self, dt)
 		if state.player.left then
@@ -28,11 +37,7 @@ return function(x,y)
 
 	entity.draw = function(self)
 		love.graphics.setColor(0,1,0,1)
-		love.graphics.rectangle('fill', self.x, self.y, self.w, self.h)
-		love.graphics.setColor(love.graphics.getBackgroundColor())
-		love.graphics.rectangle('fill', self.x, self.y, self.w, self.h / 2)
-		love.graphics.setColor(0,1,0,1)
-		love.graphics.rectangle('fill', self.x + (self.w / 2) - 2, self.y, 4, self.h)
+		love.graphics.draw(self.image, self.x, self.y, 0, 2, 2)
 	end
 
 	return entity
