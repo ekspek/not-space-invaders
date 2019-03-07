@@ -5,14 +5,14 @@ return function(x,y)
 		id = 'bullet',
 		x = x,
 		y = y,
-		w = 2,
+		w = 1,
 		h = 8,
 		speed = 500,
 		remove = false,
 	}
 
-	entity.body = love.physics.newBody(world, x, y, 'dynamic')
-	entity.body:setMass(32)
+	entity.body = love.physics.newBody(world, entity.x, entity.y, 'dynamic')
+	entity.body:setMass(0)
 	entity.body:setLinearVelocity(0, -entity.speed)
 	entity.body:setBullet(true)
 	entity.shape = love.physics.newRectangleShape(entity.w, entity.h)
@@ -43,14 +43,13 @@ return function(x,y)
 	end
 	
 	entity.postSolve = function(self, id)
-		if id == 'invader1' or id == 'invader2' or id == 'invader3' then
-			self.remove = true
-			self.fixture:destroy()
+		for _, id_list in pairs({'invader1', 'invader2', 'invader3', 'border'}) do
+			if id == id_list then
+				self.remove = true
+				self.fixture:destroy()
+			end
 		end
 	end
-
-	--entity.getWidth = function(self) return entity.w end
-	--entity.getHeight = function(self) return entity.h end
 
 	return entity
 end
