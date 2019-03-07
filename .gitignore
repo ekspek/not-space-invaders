@@ -6,6 +6,9 @@
 sprites/spritesheet_16x16.png
 sprites/spritesheet_16x16.xcf
 
+# Fonts
+fonts/
+
 # Compiled Lua sources
 luac.out
 

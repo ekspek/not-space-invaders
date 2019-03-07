@@ -14,6 +14,7 @@ return function(x,y)
 	entity.body = love.physics.newBody(world, x, y, 'dynamic')
 	entity.body:setMass(32)
 	entity.body:setLinearVelocity(0, -entity.speed)
+	entity.body:setBullet(true)
 	entity.shape = love.physics.newRectangleShape(entity.w, entity.h)
 	entity.fixture = love.physics.newFixture(entity.body, entity.shape)
 	entity.fixture:setUserData(entity)
@@ -42,7 +43,6 @@ return function(x,y)
 	end
 	
 	entity.postSolve = function(self, id)
-		print(id)
 		if id == 'invader1' or id == 'invader2' or id == 'invader3' then
 			self.remove = true
 			self.fixture:destroy()
