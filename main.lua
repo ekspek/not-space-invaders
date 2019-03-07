@@ -53,6 +53,29 @@ function love.update(dt)
 			elseif entity.outside_left then
 				invader_outside_left = true
 			end
+			
+			local x, y = entity.body:getPosition() --entity.body:getWorldPoints(entity.shape:getPoints())
+			local theta = entity.body:getAngle()
+			local r = 100
+			local rayhitinvader = false
+			
+			world:rayCast(x, y, x - r * math.sin(theta), y + r * math.cos(theta),
+				function(fixture, x, y, xn, yn, fraction)
+					local data = fixture:getUserData()
+					if data.id == 'invader1' or data.id == 'invader2' or data.id == 'invader3' then
+						rayhitinvader = true
+						return 1
+					else
+						return 0
+					end
+				end
+			)
+			
+			if not rayhitinvader then
+				if math.random() < 0.001 then
+					if entity.fire then entity:fire() end
+				end
+			end
 		end
 
 		if entity.remove then
@@ -102,6 +125,15 @@ function love.draw(dt)
 		if entity.body then
 			love.graphics.setColor(1,0,0)
 			love.graphics.polygon('line', entity.body:getWorldPoints(entity.shape:getPoints()))
+		end
+		
+		if entity.id == 'invader1' or entity.id == 'invader2' or entity.id == 'invader3' then
+			local x, y = entity.body:getPosition() --entity.body:getWorldPoints(entity.shape:getPoints())
+			local theta = entity.body:getAngle()
+			local r = 100
+			
+			love.graphics.setColor(0,1,0)
+			love.graphics.line(x, y, x - 100 * math.sin(theta), y + 100 * math.cos(theta))
 		end
 		--]]
 	end

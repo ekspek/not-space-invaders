@@ -76,10 +76,10 @@ return function(invader,x,y)
 		local ymin = math.min(y1, y2, y3, y4)
 		local ymax = math.max(y1, y2, y3, y4)
 		
-		self.remove =  xmin < -border_out
-			or xmax > love.graphics.getWidth() + border_out
-			or ymin < -border_out
-			or ymax > love.graphics.getHeight() + border_out
+		self.remove =  xmax < -border_out
+			or xmin > love.graphics.getWidth() + border_out
+			or ymax < -border_out
+			or ymin > love.graphics.getHeight() + border_out
 		
 		self.outside_left = xmin < border_in
 		self.outside_right = xmax > love.graphics.getWidth() - border_in
@@ -126,6 +126,10 @@ return function(invader,x,y)
 			love.graphics.setColor(1, 1, 1, self.health + 0.5)
 			love.graphics.draw(self.image, self.quads[state.frame + 1], x, y, self.body:getAngle(), 2, 2)
 		end
+	end
+	
+	entity.fire = function(self)
+		--entity.firebuffer = true
 	end
 	
 	entity.postSolve = function(self, id)
