@@ -34,13 +34,13 @@ function love.update(dt)
 		-- This was necessary to get the player's position
 		if entity.id == 'player' then
 			if state.player.firebuffer then
-				table.insert(entities, bullet(math.floor(entity.x + (entity.w / 2)), entity.y + 5))
+				table.insert(entities, bullet(math.floor(entity.x + (entity.w / 2)), entity.y + 0))
 				state.player.firebuffer = false
 			end
 
 			---[[ debug test option
 			if state.player.firehold then
-				table.insert(entities, bullet(math.floor(entity.x + (entity.w / 2)), entity.y + 5))
+				table.insert(entities, bullet(math.floor(entity.x + (entity.w / 2)), entity.y + 0))
 			end
 			--]]
 		end
@@ -97,6 +97,13 @@ end
 function love.draw(dt)
 	for _, entity in ipairs(entities) do
 		if entity.draw then entity:draw() end
+		
+		---[[
+		if entity.body then
+			love.graphics.setColor(1,0,0)
+			love.graphics.polygon('line', entity.body:getWorldPoints(entity.shape:getPoints()))
+		end
+		--]]
 	end
 end
 

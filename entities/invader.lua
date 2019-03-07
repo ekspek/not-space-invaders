@@ -68,7 +68,7 @@ return function(invader,x,y)
 	entity.update = function(self, dt)
 		-- Check if outside of playable area
 		-- Could be replaced by checking for collision with borders instead
-		local border_out = 40 -- positive means towards the outside of the screen
+		local border_out = 30 -- positive means towards the outside of the screen
 		local border_in = 10 -- positive means towards the inside of the screen
 		local x1, y1, x2, y2, x3, y3, x4, y4 = self.body:getWorldPoints(self.shape:getPoints())
 		local xmin = math.min(x1, x2, x3, x4)
