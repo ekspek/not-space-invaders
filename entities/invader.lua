@@ -1,14 +1,23 @@
 local world = require 'world'
 local state = require 'state'
 
-return function(x,y)
+return function(invader,x,y)
 	local entity = {
-		id = 'invader',
+		id = 'invader' .. invader,
 		x = x,
 		y = y,
-		w = 22,
-		h = 16,
 	}
+	
+	if invader == 1 then
+		entity.w = 12 * 2
+		entity.h = 8 * 2
+	elseif invader == 2 then
+		entity.w = 11 * 2
+		entity.h = 8 * 2
+	elseif invader == 3 then
+		entity.w = 8 * 2
+		entity.h = 8 * 2
+	end
 	
 	entity.quads = {}
 
@@ -22,9 +31,19 @@ return function(x,y)
 	entity.fixture:setUserData(entity)
 	
 	entity.load = function(self)
-		self.image = love.graphics.newImage("sprites/inv2.png")
-		table.insert(self.quads, love.graphics.newQuad(0, 0, 11, 8, self.image:getDimensions()))
-		table.insert(self.quads, love.graphics.newQuad(16, 0, 11, 8, self.image:getDimensions()))
+		if invader == 1 then
+			self.image = love.graphics.newImage("sprites/inv1.png")
+			table.insert(self.quads, love.graphics.newQuad(0, 0, 12, 8, self.image:getDimensions()))
+			table.insert(self.quads, love.graphics.newQuad(16, 0, 12, 8, self.image:getDimensions()))
+		elseif invader == 2 then
+			self.image = love.graphics.newImage("sprites/inv2.png")
+			table.insert(self.quads, love.graphics.newQuad(0, 0, 11, 8, self.image:getDimensions()))
+			table.insert(self.quads, love.graphics.newQuad(16, 0, 11, 8, self.image:getDimensions()))
+		elseif invader == 3 then
+			self.image = love.graphics.newImage("sprites/inv3.png")
+			table.insert(self.quads, love.graphics.newQuad(0, 0, 8, 8, self.image:getDimensions()))
+			table.insert(self.quads, love.graphics.newQuad(8, 0, 8, 8, self.image:getDimensions()))
+		end
 	end
 
 	entity.update = function(self, dt)

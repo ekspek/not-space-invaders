@@ -41,8 +41,12 @@ return function(x,y)
 		love.graphics.polygon('fill', self.body:getWorldPoints(self.shape:getPoints()))
 	end
 	
-	entity.postSolve = function(self)
-		self.remove = true
+	entity.postSolve = function(self, id)
+		print(id)
+		if id == 'invader1' or id == 'invader2' or id == 'invader3' then
+			self.remove = true
+			self.fixture:destroy()
+		end
 	end
 
 	--entity.getWidth = function(self) return entity.w end

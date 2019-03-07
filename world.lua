@@ -6,10 +6,10 @@ function callback.postSolve(fixture_a, fixture_b, contact)
 	local a = fixture_a:getUserData()
 	local b = fixture_b:getUserData()
 
-    if a.postSolve then a:postSolve() end
-	if b.postSolve then b:postSolve() end
+    if a.postSolve then a:postSolve(b.id) end
+	if b.postSolve then b:postSolve(a.id) end
 end
 
-world:setCallbacks(nil, nil, nil, callback.postSolve)
+world:setCallbacks(callback.postSolve, nil, nil, nil)
 
 return world
