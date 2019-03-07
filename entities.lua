@@ -1,10 +1,13 @@
 local player = require 'entities.player'
 local invader = require 'entities.invader'
 local bullet = require 'entities.bullet'
+local border = require 'entities.border'
 local debug = require 'entities.debug'
 
 local entities = {
 	player(love.graphics.getWidth() / 2 - 16, love.graphics.getHeight() * 0.8),
+	border(-10, 0, 10, love.graphics.getHeight()),
+	border(love.graphics.getWidth(), 0, 10, love.graphics.getHeight()),
 	debug(),
 }
 

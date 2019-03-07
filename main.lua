@@ -98,7 +98,7 @@ function love.draw(dt)
 	for _, entity in ipairs(entities) do
 		if entity.draw then entity:draw() end
 		
-		---[[
+		--[[
 		if entity.body then
 			love.graphics.setColor(1,0,0)
 			love.graphics.polygon('line', entity.body:getWorldPoints(entity.shape:getPoints()))

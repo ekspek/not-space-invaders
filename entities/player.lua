@@ -33,17 +33,15 @@ return function(x,y)
 		if state.player.left == state.player.right then
 			self.body:setLinearVelocity(0,0)
 		elseif state.player.left then
-			if self.x - self.speed * dt > 0 then
+			if self.x - self.speed * dt > 10 then
 				self.body:setLinearVelocity(-self.speed, 0)
 			else
-				self.x = 0
 				self.body:setLinearVelocity(0,0)
 			end
 		elseif state.player.right then
-			if self.x + self.speed * dt < love.graphics.getWidth() - self.w then
+			if self.x + self.speed * dt < love.graphics.getWidth() - self.w - 10 then
 				self.body:setLinearVelocity(self.speed, 0)
 			else
-				self.x = love.graphics.getWidth() - self.w
 				self.body:setLinearVelocity(0,0)
 			end
 		end
