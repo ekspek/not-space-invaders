@@ -5,6 +5,8 @@ local entities = require 'entities'
 local bullet = require 'entities.bullet'
 
 function love.load()
+	local step_frame = 0
+	
 	love.graphics.setDefaultFilter('linear', 'nearest', 0)
 	
 	love.graphics.setBackgroundColor(0,0,0)
@@ -15,7 +17,10 @@ function love.load()
 end
 
 function love.update(dt)
-	state.invadercount = 0
+	local invader_outside_left = false
+	local invader_outside_right = false
+	
+	state.invader.count = 0
 	local i = 1
 	while i <= #entities do
 		local entity = entities[i]
@@ -41,13 +46,44 @@ function love.update(dt)
 		end
 
 		if entity.id == 'invader1' or entity.id == 'invader2' or entity.id == 'invader3' then
-			state.invadercount = state.invadercount + 1
+			state.invader.count = state.invader.count + 1
+			
+			if entity.outside_right then
+				invader_outside_right = true
+			elseif entity.outside_left then
+				invader_outside_left = true
+			end
 		end
 
 		if entity.remove then
 			table.remove(entities, i)
 		else
 			i = i + 1
+		end
+	end
+
+	-- Code inside this loop is run once per frame (on frame change)
+	-- The speed is determined by state.pace, which specifies the
+	-- changes per second
+	if step_frame ~= state.frame then
+		step_frame = state.frame
+		
+		if invader_outside_right then
+			if state.invader.direction == 'down' then
+				state.invader.direction = 'left'
+			elseif state.invader.direction == 'right' then
+				state.invader.direction = 'down'
+			end
+				
+			if invader_outside_left then
+				state.invader.direction = 'down'
+			end
+		elseif invader_outside_left then
+			if state.invader.direction == 'down' then
+				state.invader.direction = 'right'
+			elseif state.invader.direction == 'left' then
+				state.invader.direction = 'down'
+			end
 		end
 	end
 

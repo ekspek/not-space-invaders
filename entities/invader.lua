@@ -6,12 +6,24 @@ return function(invader,x,y)
 		id = 'invader' .. invader,
 		x = x,
 		y = y,
+		step = 1,
+		
+		-- Flags to warn if the horde needs to change directions,
+		-- NOT if an invader is outside of the screen.
+		outside_right = false,
+		outside_left = false,
+		
+		-- Each invader dies when their health reaches zero
+		-- and they stop moving (or get to a really low velocity).
+		-- Dying makes the burst animation play, and when this ends
+		-- the invader is removed from the entities list.
 		alive = true,
 		remove = false,
 		health = 1,
 	}
 	
 	local death_timer = 0.5
+	local step_frame = state.frame
 	
 	if invader == 1 then
 		entity.w = 12 * 2
@@ -56,20 +68,23 @@ return function(invader,x,y)
 	entity.update = function(self, dt)
 		-- Check if outside of playable area
 		-- Could be replaced by checking for collision with borders instead
-		local border = 40 -- positive means outside screen
+		local border_out = 40 -- positive means towards the outside of the screen
+		local border_in = 10 -- positive means towards the inside of the screen
 		local x1, y1, x2, y2, x3, y3, x4, y4 = self.body:getWorldPoints(self.shape:getPoints())
 		local xmin = math.min(x1, x2, x3, x4)
 		local xmax = math.max(x1, x2, x3, x4)
 		local ymin = math.min(y1, y2, y3, y4)
 		local ymax = math.max(y1, y2, y3, y4)
-
-		if xmin < -border or xmax > love.graphics.getWidth() + border then
-			self.remove = true
-		end
-		if ymin < -border or ymax > love.graphics.getHeight() + border then
-			self.remove = true
-		end
 		
+		self.remove =  xmin < -border_out
+			or xmax > love.graphics.getWidth() + border_out
+			or ymin < -border_out
+			or ymax > love.graphics.getHeight() + border_out
+		
+		self.outside_left = xmin < border_in
+		self.outside_right = xmax > love.graphics.getWidth() - border_in
+		
+		-- Resetting the angle when velocity is low
 		local dx, dy = self.body:getLinearVelocity()
 		local dv = math.abs(dx) + math.abs(dy)
 		
@@ -78,6 +93,18 @@ return function(invader,x,y)
 				self.alive = false
 			else
 				self.body:setAngle(0)
+				if step_frame ~= state.frame then
+					step_frame = state.frame
+					
+					local x, y = self.body:getPosition()
+					if state.invader.direction == 'right' then
+						self.body:setPosition(x + 2, y)
+					elseif state.invader.direction == 'left' then
+						self.body:setPosition(x - 2, y)
+					elseif state.invader.direction == 'down' then
+						self.body:setPosition(x, y + 10)
+					end
+				end
 			end
 		end
 		
