@@ -146,3 +146,11 @@ end
 function love.keyreleased(key)
 	input.release(key)
 end
+
+function love.gamepadpressed(joystick, button)
+	input.press(button)
+end
+
+function love.gamepadreleased(joystick, button)
+	input.release(button)
+end

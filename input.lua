@@ -15,15 +15,31 @@ local releasemap = {
 	f = function() state.player.firehold = false end,
 }
 
+local pressmap_joystick = {
+	dpleft = pressmap.left,
+	dpright = pressmap.right,
+	y = pressmap.f,
+}
+
+local releasemap_joystick = {
+	dpleft = releasemap.left,
+	dpright = releasemap.right,
+	y = releasemap.f,
+}
+
 return {
 	press = function(key)
 		if pressmap[key] then
 			pressmap[key]()
+		elseif pressmap_joystick[key] then
+			pressmap_joystick[key]()
 		end
 	end,
 	release = function(key)
 		if releasemap[key] then
 			releasemap[key]()
+		elseif releasemap_joystick[key] then
+			releasemap_joystick[key]()
 		end
 	end,
 }
