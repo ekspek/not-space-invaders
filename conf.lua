@@ -3,6 +3,4 @@ function love.conf(t)
 	t.console = true
 	t.window.width = 224 * 2
 	t.window.height = 256 * 2
-
-	t.modules.joystick = false
 end
