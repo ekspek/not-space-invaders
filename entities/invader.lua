@@ -20,6 +20,9 @@ return function(invader,x,y)
 		alive = true,
 		remove = false,
 		health = 1,
+		
+		-- Code to handle projectile fire
+		firebuffer = false,
 	}
 	
 	local death_timer = 0.5
@@ -71,6 +74,8 @@ return function(invader,x,y)
 		local border_out = 30 -- positive means towards the outside of the screen
 		local border_in = 10 -- positive means towards the inside of the screen
 		local x1, y1, x2, y2, x3, y3, x4, y4 = self.body:getWorldPoints(self.shape:getPoints())
+		self.x = x1
+		self.y = y1
 		local xmin = math.min(x1, x2, x3, x4)
 		local xmax = math.max(x1, x2, x3, x4)
 		local ymin = math.min(y1, y2, y3, y4)
@@ -123,17 +128,23 @@ return function(invader,x,y)
 			love.graphics.setColor(1,1,1,0.5)
 			love.graphics.draw(self.image_death, x, y, self.body:getAngle(), 2, 2)
 		else
-			love.graphics.setColor(1, 1, 1, self.health + 0.5)
+			if self.firebuffer then
+				love.graphics.setColor(1,0,0,1)
+				self.firebuffer = false
+			else
+				love.graphics.setColor(1, 1, 1, self.health + 0.5)
+			end
 			love.graphics.draw(self.image, self.quads[state.frame + 1], x, y, self.body:getAngle(), 2, 2)
 		end
 	end
 	
+	-- Mostly a debugging method for now
 	entity.fire = function(self)
-		--entity.firebuffer = true
+		self.firebuffer = true
 	end
 	
 	entity.postSolve = function(self, id)
-		if id == 'bullet' then
+		if id == 'bullet' or id == 'bullet_invader' then
 			if self.health > 0 then
 				self.health = self.health - 1
 			end

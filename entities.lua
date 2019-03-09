@@ -1,6 +1,7 @@
 local player = require 'entities.player'
 local invader = require 'entities.invader'
 local bullet = require 'entities.bullet'
+local bullet = require 'entities.bullet_invader'
 local border = require 'entities.border'
 local debug = require 'entities.debug'
 

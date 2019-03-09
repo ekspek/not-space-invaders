@@ -57,6 +57,13 @@ return function(x,y)
 			love.graphics.draw(self.image, self.x, self.y - 3 * 2, 0, 2, 2)
 		end
 	end
+	
+	entity.postSolve = function(self, id)
+		if id == 'bullet_invader' then
+			self.alive = false
+			state.player.alive = false
+		end
+	end
 
 	return entity
 end

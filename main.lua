@@ -3,6 +3,7 @@ local world = require 'world'
 local input = require 'input'
 local entities = require 'entities'
 local bullet = require 'entities.bullet'
+local bullet_invader = require 'entities.bullet_invader'
 
 function love.load()
 	local step_frame = 0
@@ -45,7 +46,7 @@ function love.update(dt)
 			--]]
 		end
 
-		if entity.id == 'invader1' or entity.id == 'invader2' or entity.id == 'invader3' then
+		if (entity.id == 'invader1' or entity.id == 'invader2' or entity.id == 'invader3') and state.player.alive then
 			state.invader.count = state.invader.count + 1
 			
 			if entity.outside_right then
@@ -73,6 +74,7 @@ function love.update(dt)
 			
 			if not rayhitinvader then
 				if math.random() < 0.001 then
+					table.insert(entities, bullet_invader(math.floor(entity.x + (entity.w / 2)), entity.y + entity.h + 5))
 					if entity.fire then entity:fire() end
 				end
 			end
@@ -110,8 +112,10 @@ function love.update(dt)
 		end
 	end
 
-	state:update(dt)
-	world:update(dt)
+	if state.player.alive then
+		state:update(dt)
+		world:update(dt)
+	end
 	
 	-- 30FPS mode
 	--love.timer.sleep(1/30)
