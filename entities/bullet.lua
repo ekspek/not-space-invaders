@@ -5,19 +5,20 @@ return function(x,y)
 		id = 'bullet',
 		x = x,
 		y = y,
-		w = 1,
+		w = 2,
 		h = 8,
 		speed = 500,
 		remove = false,
 	}
 
 	entity.body = love.physics.newBody(world, entity.x, entity.y, 'dynamic')
-	entity.body:setMass(0)
-	entity.body:setLinearVelocity(0, -entity.speed)
-	entity.body:setBullet(true)
 	entity.shape = love.physics.newRectangleShape(entity.w, entity.h)
 	entity.fixture = love.physics.newFixture(entity.body, entity.shape)
 	entity.fixture:setUserData(entity)
+	
+	entity.body:setLinearVelocity(0, -entity.speed)
+	entity.body:setBullet(true)
+	--entity.body:setMass(32)
 
 	entity.update = function(self, dt)
 		-- Check if outside of playable area

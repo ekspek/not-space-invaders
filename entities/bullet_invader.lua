@@ -5,7 +5,7 @@ return function(x,y)
 		id = 'bullet_invader',
 		x = x,
 		y = y,
-		w = 3 * 2,
+		w = 2,
 		h = 8 * 2,
 		speed = 200,
 		remove = false,
@@ -16,12 +16,13 @@ return function(x,y)
 	local chance = math.random(1,3)
 
 	entity.body = love.physics.newBody(world, entity.x, entity.y, 'dynamic')
-	entity.body:setMass(0)
-	entity.body:setLinearVelocity(0, entity.speed)
-	entity.body:setBullet(true)
 	entity.shape = love.physics.newRectangleShape(entity.w, entity.h)
 	entity.fixture = love.physics.newFixture(entity.body, entity.shape)
 	entity.fixture:setUserData(entity)
+	
+	entity.body:setMass(10)
+	entity.body:setLinearVelocity(0, entity.speed)
+	entity.body:setBullet(true)
     
     entity.image = love.graphics.newImage("sprites/bullet.png")
     local bar = love.graphics.newQuad(0, 0, 3, 8, entity.image:getDimensions())
@@ -53,17 +54,19 @@ return function(x,y)
 	end
 
 	entity.draw = function(self)
-		love.graphics.setColor(1,1,1,1)
+		local x, y = self.body:getWorldPoints(self.shape:getPoints())
+		x = x - 2
 		
+		love.graphics.setColor(1,1,1,1)
         if chance == 1 then
-            love.graphics.draw(self.image, slash, self.x, self.y, self.body:getAngle(), 2, 2)
-            love.graphics.draw(self.image, bar, self.x, self.y + 15 + math.floor(bullet_frame) * -5, self.body:getAngle(), 2, 2)
+            love.graphics.draw(self.image, slash, x, y, self.body:getAngle(), 2, 2)
+            love.graphics.draw(self.image, bar, x, y + 15 + math.floor(bullet_frame) * -5, self.body:getAngle(), 2, 2)
         elseif chance == 2 then
-            love.graphics.draw(self.image, wave[math.floor(bullet_frame % 2) + 1], self.x, self.y, self.body:getAngle(), 2, 2)
+            love.graphics.draw(self.image, wave[math.floor(bullet_frame % 2) + 1], x, y, self.body:getAngle(), 2, 2)
         elseif chance == 3 then
-			love.graphics.draw(self.image, slash, self.x, self.y, self.body:getAngle(), 2, 2)
+			love.graphics.draw(self.image, slash, x, y, self.body:getAngle(), 2, 2)
 			love.graphics.setColor(1,1,1,math.floor(bullet_frame % 2))
-            love.graphics.draw(self.image, wave[math.floor(bullet_frame / 3) + 1], self.x, self.y + 4 * math.floor(bullet_frame / 3), self.body:getAngle(), 2, 2)
+            love.graphics.draw(self.image, wave[math.floor(bullet_frame / 3) + 1], x, y + 4 * math.floor(bullet_frame / 3), self.body:getAngle(), 2, 2)
         end
 	end
 	
