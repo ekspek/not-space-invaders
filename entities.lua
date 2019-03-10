@@ -9,32 +9,33 @@ local border_top = require 'entities.border_top'
 local debug = require 'entities.debug'
 
 local entities = {
-	player(love.graphics.getWidth() / 2 - 16, love.graphics.getHeight() * 0.8),
 	border(-10, 0, 10, love.graphics.getHeight()),
 	border(love.graphics.getWidth(), 0, 10, love.graphics.getHeight()),
 	border_top(0,0),
 	border_bottom(0, love.graphics.getHeight() - 30),
+	
+	player(love.graphics.getWidth() / 2 - 16, love.graphics.getHeight() * 0.9),
 	--debug(),
 }
 
 for i = 1,11 do
-	table.insert(entities, invader((20 + ((love.graphics.getWidth() - 40) / 11) * i) - 16, 40 + 30, 3))
+	table.insert(entities, invader((20 + ((love.graphics.getWidth() - 40) / 11) * i) - 16, 100 + 30, 3))
 end
 
 for j = 2,3 do
 	for i = 1,11 do
-		table.insert(entities, invader((20 + ((love.graphics.getWidth() - 40) / 11) * i) - 16, 40 + j * 30, 2))
+		table.insert(entities, invader((20 + ((love.graphics.getWidth() - 40) / 11) * i) - 16, 100 + j * 30, 2))
 	end
 end
 
 for j = 4,5 do
 	for i = 1,11 do
-		table.insert(entities, invader((20 + ((love.graphics.getWidth() - 40) / 11) * i) - 16, 40 + j * 30, 1))
+		table.insert(entities, invader((20 + ((love.graphics.getWidth() - 40) / 11) * i) - 16, 100 + j * 30, 1))
 	end
 end
 
 for i = 1,4 do
-	table.insert(entities, barrier((love.graphics.getWidth() / 5) * i, love.graphics.getHeight() * 0.7))
+	table.insert(entities, barrier((love.graphics.getWidth() / 5) * i, love.graphics.getHeight() * 0.8))
 end
 
 return entities
