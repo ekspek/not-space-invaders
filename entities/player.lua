@@ -14,6 +14,7 @@ return function(x,y)
 
 	entity.quads_death = {}
 	local death_frame = 0
+	local death_timer = 0
 	
 	entity.body = love.physics.newBody(world, entity.x, entity.y, 'kinematic')
 	entity.shape = love.physics.newRectangleShape(entity.w, entity.h - 3 * 2)
@@ -46,22 +47,27 @@ return function(x,y)
 			end
 		end
 		
-		death_frame = (death_frame + 12 * dt) % 2
+		if not state.player.alive then
+			death_frame = (death_frame + 12 * dt) % 2
+			death_timer = death_timer + dt
+		end
 	end
 
 	entity.draw = function(self)
 		love.graphics.setColor(0,1,0,1)
-		if not self.alive then
-			love.graphics.draw(self.image_death, self.quads_death[math.floor(death_frame) + 1], self.x, self.y - 3 * 2, nil, 2, 2)
+		if not state.player.alive then
+			if death_timer < 1 then
+				love.graphics.draw(self.image_death, self.quads_death[math.floor(death_frame) + 1], self.x, self.y - 3 * 2, nil, 2, 2)
+			end
 		else
 			love.graphics.draw(self.image, self.x, self.y - 3 * 2, 0, 2, 2)
+			death_timer = 0
 		end
 	end
 	
 	entity.postSolve = function(self, id)
 		if id == 'bullet_invader' or id == 'bullet' then
-			--self.alive = false
-			--state.player.alive = false
+			state.player.alive = false
 		end
 	end
 
