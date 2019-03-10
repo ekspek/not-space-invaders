@@ -45,8 +45,7 @@ return function(x,y,invader)
 	entity.fixture:setUserData(entity)
 	
 	entity.body:setLinearVelocity(0,0)
-	--entity.body:setMass(32)
-	--entity.body:setInertia(500)
+	entity.body:setMassData(0, 0, 0.4267, 29.58)
 	entity.body:setLinearDamping(1)
 	entity.body:setAngularDamping(1)
 	
