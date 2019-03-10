@@ -26,14 +26,15 @@ state.invader.count = 0
 state.invader.direction = 'right'
 
 state.freeze = function(self)
+	self.frozen = true
 	self.pace_initial = self.pace
 	self.pace = 0
 	self.frame = 0
 	self.frame_double = 0
-	self.frozen = true
 end
 
 state.unfreeze = function(self)
+	self.frozen = false
 	self.pace = self.pace_initial
 	self.player.alive = true
 	self.timer = 0
