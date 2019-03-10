@@ -22,19 +22,20 @@ return function(x,y)
 	entity.update = function(self, dt)
 		-- Check if outside of playable area
 		-- Could be replaced by checking for collision with borders instead
-		local border = 5 -- positive means outside screen
+		local border = 0 -- positive means outside screen
 		local x1, y1, x2, y2, x3, y3, x4, y4 = self.body:getWorldPoints(self.shape:getPoints())
+		self.x = x1
+        self.y = y1
 		local xmin = math.min(x1, x2, x3, x4)
 		local xmax = math.max(x1, x2, x3, x4)
 		local ymin = math.min(y1, y2, y3, y4)
 		local ymax = math.max(y1, y2, y3, y4)
 
-		if xmin < -border or xmax > love.graphics.getWidth() + border then
-			self.remove = true
-		end
-		if ymin < -border or ymax > love.graphics.getHeight() + border then
-			self.remove = true
-		end
+		self.remove = self.remove
+			or xmax < -border
+			or xmin > love.graphics.getWidth() + border
+			or ymax < -border
+			or ymin > love.graphics.getHeight() + border
 	end
 
 	entity.draw = function(self)

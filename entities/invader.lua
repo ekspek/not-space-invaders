@@ -1,7 +1,7 @@
 local world = require 'world'
 local state = require 'state'
 
-return function(invader,x,y)
+return function(x,y,invader)
 	local entity = {
 		id = 'invader' .. invader,
 		x = x,
@@ -71,7 +71,7 @@ return function(invader,x,y)
 	entity.update = function(self, dt)
 		-- Check if outside of playable area
 		-- Could be replaced by checking for collision with borders instead
-		local border_out = 30 -- positive means towards the outside of the screen
+		local border_out = 0 -- positive means towards the outside of the screen
 		local border_in = 10 -- positive means towards the inside of the screen
 		local x1, y1, x2, y2, x3, y3, x4, y4 = self.body:getWorldPoints(self.shape:getPoints())
 		self.x = x1
@@ -81,7 +81,8 @@ return function(invader,x,y)
 		local ymin = math.min(y1, y2, y3, y4)
 		local ymax = math.max(y1, y2, y3, y4)
 		
-		self.remove =  xmax < -border_out
+		self.remove = self.remove
+			or xmax < -border_out
 			or xmin > love.graphics.getWidth() + border_out
 			or ymax < -border_out
 			or ymin > love.graphics.getHeight() + border_out
@@ -124,16 +125,13 @@ return function(invader,x,y)
 
 	entity.draw = function(self)
 		local x, y = self.body:getWorldPoints(self.shape:getPoints())
+		self.x = x1
+        self.y = y1
 		if not self.alive then
 			love.graphics.setColor(1,1,1,0.5)
 			love.graphics.draw(self.image_death, x, y, self.body:getAngle(), 2, 2)
 		else
-			if self.firebuffer then
-				love.graphics.setColor(1,0,0,1)
-				self.firebuffer = false
-			else
-				love.graphics.setColor(1, 1, 1, self.health + 0.5)
-			end
+			love.graphics.setColor(1, 1, 1, self.health + 0.5)
 			love.graphics.draw(self.image, self.quads[state.frame + 1], x, y, self.body:getAngle(), 2, 2)
 		end
 	end
@@ -144,9 +142,11 @@ return function(invader,x,y)
 	end
 	
 	entity.postSolve = function(self, id)
-		if id == 'bullet' or id == 'bullet_invader' then
-			if self.health > 0 then
-				self.health = self.health - 1
+		for _, id_list in pairs({'bullet', 'bullet_invader'}) do
+			if id == id_list then
+				if self.health > 0 then
+					self.health = self.health - 1
+				end
 			end
 		end
 	end

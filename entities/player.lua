@@ -52,7 +52,7 @@ return function(x,y)
 	entity.draw = function(self)
 		love.graphics.setColor(0,1,0,1)
 		if not self.alive then
-			love.graphics.draw(self.image_death, self.quads_death[math.floor(death_frame) + 1], self.x, self.y - 3 + 2, nil, 2, 2)
+			love.graphics.draw(self.image_death, self.quads_death[math.floor(death_frame) + 1], self.x, self.y - 3 * 2, nil, 2, 2)
 		else
 			love.graphics.draw(self.image, self.x, self.y - 3 * 2, 0, 2, 2)
 		end
