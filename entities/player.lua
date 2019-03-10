@@ -31,7 +31,7 @@ return function(x,y)
 	entity.update = function(self, dt)
 		self.x, self.y = self.body:getWorldPoints(self.shape:getPoints())
 		
-		if state.player.left == state.player.right then
+		if state.player.left == state.player.right or state.frozen then
 			self.body:setLinearVelocity(0,0)
 		elseif state.player.left then
 			if self.x - self.speed * dt > 10 then
@@ -66,7 +66,7 @@ return function(x,y)
 	end
 	
 	entity.postSolve = function(self, id)
-		if id == 'bullet_invader' or id == 'bullet' then
+		if id == 'bullet_invader' or id == 'b_ullet' then
 			state.player.alive = false
 		end
 	end

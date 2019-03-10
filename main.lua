@@ -5,6 +5,7 @@ local entities = require 'entities'
 local bullet = require 'entities.bullet'
 local bullet_invader = require 'entities.bullet_invader'
 local gameover = require 'entities.gameover'
+local win = require 'entities.win'
 
 function love.load()
 	local step_frame = 0
@@ -35,13 +36,13 @@ function love.update(dt)
 		-- has been pressed and the current selected entity is the player
 		-- This was necessary to get the player's position
 		if entity.id == 'player' then
-			if state.player.firebuffer then
+			if state.player.firebuffer and not state.frozen then
 				table.insert(entities, bullet(math.floor(entity.x + (entity.w / 2)), entity.y - 5))
 				state.player.firebuffer = false
 			end
 
 			---[[ debug test option
-			if state.player.firehold then
+			if state.player.firehold and not state.frozen then
 				table.insert(entities, bullet(math.floor(entity.x + (entity.w / 2)), entity.y - 5))
 			end
 			--]]
@@ -115,6 +116,8 @@ function love.update(dt)
 	
 	if state.gameover then
 		table.insert(entities, gameover())
+	elseif state.win then
+		table.insert(entities, win())
 	end
 
 	if state.player.alive then
