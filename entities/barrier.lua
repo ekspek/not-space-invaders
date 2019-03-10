@@ -28,9 +28,9 @@ return function(x,y)
     end
     
     entity.draw = function(self)
-        self.x, self.y = self.body:getWorldPoints(self.shape:getPoints())
+        local x, y = self.body:getWorldPoints(self.shape:getPoints())
         love.graphics.setColor(0,1,0,self.health / 10)
-        love.graphics.draw(self.image, self.x, self.y, self.body:getAngle(), 2, 2)
+        love.graphics.draw(self.image, x, y, self.body:getAngle(), 2, 2)
     end
     
     entity.postSolve = function(self, id)

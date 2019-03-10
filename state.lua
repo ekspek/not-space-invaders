@@ -4,6 +4,10 @@ local state = {
 	frame = 0,
 	frame_double = 0,
 	pace = 1, -- Invader speed
+	score1 = 0,
+	score2 = 0,
+	hiscore = 0,
+	credits = 0,
 }
 
 state.player.left = false
@@ -11,11 +15,16 @@ state.player.right = false
 state.player.firebuffer = false
 state.player.firehold = false
 state.player.alive = true
+state.player.lives = 3
 
 state.invader.count = 0
 state.invader.direction = 'right'
 
 state.update = function(self, dt)
+	if state.player.lives <= 0 then
+		self.player.alive = false
+	end
+	
 	if not self.player.alive then
 		self.pace = 0
 		self.frame = 0
