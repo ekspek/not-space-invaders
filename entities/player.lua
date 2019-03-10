@@ -60,8 +60,8 @@ return function(x,y)
 	
 	entity.postSolve = function(self, id)
 		if id == 'bullet_invader' or id == 'bullet' then
-			self.alive = false
-			state.player.alive = false
+			--self.alive = false
+			--state.player.alive = false
 		end
 	end
 

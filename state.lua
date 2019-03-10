@@ -45,4 +45,8 @@ state.update = function(self, dt)
 	end
 end
 
+state.addscore = function(self, score)
+	self.score1 = self.score1 + score
+end
+
 return state

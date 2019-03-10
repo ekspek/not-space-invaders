@@ -74,7 +74,7 @@ function love.update(dt)
 			
 			if not rayhitinvader then
 				if math.random() < 0.001 then
-					table.insert(entities, bullet_invader(math.floor(entity.x + (entity.w / 2)), entity.y + entity.h + 10))
+					table.insert(entities, bullet_invader(math.floor(entity.x + (entity.w / 2)), entity.y + entity.h + 10, 0))
 					if entity.fire then entity:fire() end
 				end
 			end

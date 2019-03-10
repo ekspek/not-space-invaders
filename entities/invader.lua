@@ -120,6 +120,7 @@ return function(x,y,invader)
 			if death_timer <= 0 then
 				self.fixture:destroy()
 				self.remove = true
+				state:addscore(100)
 			end
 		end
 	end
@@ -147,6 +148,8 @@ return function(x,y,invader)
 			if id == id_list then
 				if self.health > 0 then
 					self.health = self.health - 1
+				else
+					state:addscore(10)
 				end
 			end
 		end
