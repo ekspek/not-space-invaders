@@ -9,7 +9,9 @@ local state = {
 	score2 = 0,
 	hiscore = 0,
 	credits = 0,
+	frozen = false,
 	gameover = false,
+	win = false,
 }
 
 state.player.left = false
@@ -23,16 +25,23 @@ state.timer = 0
 state.invader.count = 0
 state.invader.direction = 'right'
 
+state.freeze = function(self)
+	self.pace_initial = self.pace
+	self.pace = 0
+	self.frame = 0
+	self.frame_double = 0
+	self.frozen = true
+end
+
+state.unfreeze = function(self)
+	self.pace = self.pace_initial
+	self.player.alive = true
+	self.timer = 0
+end
+
 state.update = function(self, dt)
 	if not self.player.alive then
-		self.pace_initial = self.pace
-		self.pace = 0
-		self.frame = 0
-		self.frame_double = 0
-		self.player.left = false
-		self.player.right = false
-		self.player.firebuffer = false
-		self.player.firehold = false
+		self:freeze()
 		
 		if not self.gameover then
 			if self.timer < 2 then
@@ -41,9 +50,7 @@ state.update = function(self, dt)
 				self.player.lives = self.player.lives - 1
 				
 				if self.player.lives > 0 then
-					self.pace = self.pace_initial
-					self.player.alive = true
-					self.timer = 0
+					self:unfreeze()
 				else
 					self.gameover = true
 				end
@@ -53,10 +60,15 @@ state.update = function(self, dt)
 		self.frame_double = (self.frame_double + dt * self.pace) % 2
 		self.frame = math.floor(self.frame_double)
 		
-		if self.invader.count > 0 then
-			self.pace = 55 / self.invader.count
+		if self.invader.count <= 0 or self.win then
+			self:freeze()
+			if self.timer < 1 then
+				self.timer = self.timer + dt
+			else
+				self.win = true
+			end
 		else
-			self.pace = 1
+			self.pace = 55 / self.invader.count
 		end
 	end
 end
