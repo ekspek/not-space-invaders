@@ -4,6 +4,7 @@ local input = require 'input'
 local entities = require 'entities'
 local bullet = require 'entities.bullet'
 local bullet_invader = require 'entities.bullet_invader'
+local gameover = require 'entities.gameover'
 
 function love.load()
 	local step_frame = 0
@@ -111,11 +112,16 @@ function love.update(dt)
 			end
 		end
 	end
+	
+	if state.gameover then
+		table.insert(entities, gameover())
+	end
 
 	if state.player.alive then
-		state:update(dt)
 		world:update(dt)
 	end
+	
+	state:update(dt)
 	
 	-- 30FPS mode
 	--love.timer.sleep(1/30)

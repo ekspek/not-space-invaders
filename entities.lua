@@ -6,6 +6,7 @@ local barrier = require 'entities.barrier'
 local border = require 'entities.border'
 local border_bottom = require 'entities.border_bottom'
 local border_top = require 'entities.border_top'
+local gameover = require 'entities.gameover'
 local debug = require 'entities.debug'
 
 local entities = {

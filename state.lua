@@ -4,10 +4,12 @@ local state = {
 	frame = 0,
 	frame_double = 0,
 	pace = 1, -- Invader speed
+	pace_initial = 1,
 	score1 = 0,
 	score2 = 0,
 	hiscore = 0,
 	credits = 0,
+	gameover = false,
 }
 
 state.player.left = false
@@ -16,16 +18,14 @@ state.player.firebuffer = false
 state.player.firehold = false
 state.player.alive = true
 state.player.lives = 3
+state.timer = 0
 
 state.invader.count = 0
 state.invader.direction = 'right'
 
 state.update = function(self, dt)
-	if state.player.lives <= 0 then
-		self.player.alive = false
-	end
-	
 	if not self.player.alive then
+		self.pace_initial = self.pace
 		self.pace = 0
 		self.frame = 0
 		self.frame_double = 0
@@ -33,6 +33,22 @@ state.update = function(self, dt)
 		self.player.right = false
 		self.player.firebuffer = false
 		self.player.firehold = false
+		
+		if not self.gameover then
+			if self.timer < 2 then
+				self.timer = self.timer + dt
+			else
+				self.player.lives = self.player.lives - 1
+				
+				if self.player.lives > 0 then
+					self.pace = self.pace_initial
+					self.player.alive = true
+					self.timer = 0
+				else
+					self.gameover = true
+				end
+			end
+		end
 	else
 		self.frame_double = (self.frame_double + dt * self.pace) % 2
 		self.frame = math.floor(self.frame_double)
