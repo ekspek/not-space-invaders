@@ -1,12 +1,13 @@
 local world = require 'world'
 
-return function(x,y)
+return function(x,y,angle)
 	local entity = {
 		id = 'bullet_invader',
 		x = x,
 		y = y,
 		w = 2,
 		h = 8 * 2,
+		angle = angle * math.pi / 180,
 		speed = 200,
 		remove = false,
 	}
@@ -21,7 +22,8 @@ return function(x,y)
 	entity.fixture:setUserData(entity)
 	
 	entity.body:setMass(10)
-	entity.body:setLinearVelocity(0, entity.speed)
+	entity.body:setLinearVelocity(entity.speed * math.cos(entity.angle - (math.pi / 2)), -entity.speed * math.sin(entity.angle - (math.pi / 2)))
+	entity.body:setAngle(-entity.angle)
 	entity.body:setBullet(true)
     
     entity.image = love.graphics.newImage("sprites/bullet.png")
@@ -60,7 +62,7 @@ return function(x,y)
 		love.graphics.setColor(1,1,1,1)
         if chance == 1 then
             love.graphics.draw(self.image, slash, x, y, self.body:getAngle(), 2, 2)
-            love.graphics.draw(self.image, bar, x, y + 15 + math.floor(bullet_frame) * -5, self.body:getAngle(), 2, 2)
+            love.graphics.draw(self.image, bar, x + math.sin(-self.body:getAngle()) * (15 + math.floor(bullet_frame) * -5), y + math.cos(-self.body:getAngle()) * (15 + math.floor(bullet_frame) * -5), self.body:getAngle(), 2, 2)
         elseif chance == 2 then
             love.graphics.draw(self.image, wave[math.floor(bullet_frame % 2) + 1], x, y, self.body:getAngle(), 2, 2)
         elseif chance == 3 then
