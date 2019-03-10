@@ -4,13 +4,17 @@ local bullet = require 'entities.bullet'
 local bullet_invader = require 'entities.bullet_invader'
 local barrier = require 'entities.barrier'
 local border = require 'entities.border'
+local border_bottom = require 'entities.border_bottom'
+local border_top = require 'entities.border_top'
 local debug = require 'entities.debug'
 
 local entities = {
 	player(love.graphics.getWidth() / 2 - 16, love.graphics.getHeight() * 0.8),
 	border(-10, 0, 10, love.graphics.getHeight()),
 	border(love.graphics.getWidth(), 0, 10, love.graphics.getHeight()),
-	debug(),
+	border_top(0,0),
+	border_bottom(0, love.graphics.getHeight() - 30),
+	--debug(),
 }
 
 for i = 1,11 do
