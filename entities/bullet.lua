@@ -18,7 +18,7 @@ return function(x,y)
 	
 	entity.body:setLinearVelocity(0, -entity.speed)
 	entity.body:setBullet(true)
-	--entity.body:setMass(32)
+	entity.body:setMassData(0, 0, 0.1, 0.1)
 
 	entity.update = function(self, dt)
 		-- Check if outside of playable area
