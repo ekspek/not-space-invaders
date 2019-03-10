@@ -40,13 +40,15 @@ return function(x,y,invader)
 	end
 	
 	entity.body = love.physics.newBody(world, x, y, 'dynamic')
-	entity.body:setMass(32)
-	entity.body:setLinearVelocity(0,0)
-	entity.body:setLinearDamping(1)
-	entity.body:setAngularDamping(1)
 	entity.shape = love.physics.newRectangleShape(entity.w, entity.h)
 	entity.fixture = love.physics.newFixture(entity.body, entity.shape)
 	entity.fixture:setUserData(entity)
+	
+	entity.body:setLinearVelocity(0,0)
+	--entity.body:setMass(32)
+	--entity.body:setInertia(500)
+	entity.body:setLinearDamping(1)
+	entity.body:setAngularDamping(1)
 	
 	entity.quads = {}
 	

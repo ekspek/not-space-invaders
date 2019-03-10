@@ -1,7 +1,8 @@
 local player = require 'entities.player'
 local invader = require 'entities.invader'
 local bullet = require 'entities.bullet'
-local bullet = require 'entities.bullet_invader'
+local bullet_invader = require 'entities.bullet_invader'
+local barrier = require 'entities.barrier'
 local border = require 'entities.border'
 local debug = require 'entities.debug'
 
@@ -26,6 +27,10 @@ for j = 4,5 do
 	for i = 1,11 do
 		table.insert(entities, invader((20 + ((love.graphics.getWidth() - 40) / 11) * i) - 16, 40 + j * 30, 1))
 	end
+end
+
+for i = 1,4 do
+	table.insert(entities, barrier((love.graphics.getWidth() / 5) * i, love.graphics.getHeight() * 0.7))
 end
 
 return entities

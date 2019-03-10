@@ -8,7 +8,7 @@ return function(x,y)
 		y = y,
 		w = 13 * 2,
 		h = 8 * 2,
-		speed = 300, -- pixels per second
+		speed = 100, -- pixels per second
 		alive = true,
 	}
 
@@ -59,7 +59,7 @@ return function(x,y)
 	end
 	
 	entity.postSolve = function(self, id)
-		if id == 'bullet_invader' then
+		if id == 'bullet_invader' or id == 'bullet' then
 			self.alive = false
 			state.player.alive = false
 		end

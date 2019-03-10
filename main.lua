@@ -35,13 +35,13 @@ function love.update(dt)
 		-- This was necessary to get the player's position
 		if entity.id == 'player' then
 			if state.player.firebuffer then
-				table.insert(entities, bullet(math.floor(entity.x + (entity.w / 2)), entity.y + 0))
+				table.insert(entities, bullet(math.floor(entity.x + (entity.w / 2)), entity.y - 5))
 				state.player.firebuffer = false
 			end
 
 			---[[ debug test option
 			if state.player.firehold then
-				table.insert(entities, bullet(math.floor(entity.x + (entity.w / 2)), entity.y + 0))
+				table.insert(entities, bullet(math.floor(entity.x + (entity.w / 2)), entity.y - 5))
 			end
 			--]]
 		end
@@ -55,7 +55,7 @@ function love.update(dt)
 				invader_outside_left = true
 			end
 			
-			local x, y = entity.body:getPosition() --entity.body:getWorldPoints(entity.shape:getPoints())
+			local x, y = entity.body:getPosition()
 			local theta = entity.body:getAngle()
 			local r = 100
 			local rayhitinvader = false
