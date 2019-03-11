@@ -44,8 +44,10 @@ return function(x,y,invader)
 	entity.fixture = love.physics.newFixture(entity.body, entity.shape)
 	entity.fixture:setUserData(entity)
 	
+	local ox, oy, mass, inertia = entity.body:getMassData()
+	entity.body:setMassData(ox, oy, mass, inertia)
+	
 	entity.body:setLinearVelocity(0,0)
-	entity.body:setMassData(0, 0, 0.4267, 29.58)
 	entity.body:setLinearDamping(1)
 	entity.body:setAngularDamping(1)
 	

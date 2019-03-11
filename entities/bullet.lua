@@ -16,9 +16,11 @@ return function(x,y)
 	entity.fixture = love.physics.newFixture(entity.body, entity.shape)
 	entity.fixture:setUserData(entity)
 	
+	local ox, oy, mass, inertia = entity.body:getMassData()
+	entity.body:setMassData(ox, oy, mass + 0.09, inertia)
+	
 	entity.body:setLinearVelocity(0, -entity.speed)
 	entity.body:setBullet(true)
-	entity.body:setMassData(0, 0, 0.1, 0.1)
 
 	entity.update = function(self, dt)
 		-- Check if outside of playable area
