@@ -21,7 +21,9 @@ return function(x,y,angle)
 	entity.fixture = love.physics.newFixture(entity.body, entity.shape)
 	entity.fixture:setUserData(entity)
 	
-	entity.body:setMass(10)
+	local ox, oy, mass, inertia = entity.body:getMassData()
+	entity.body:setMassData(ox, oy, mass, inertia)
+	
 	entity.body:setLinearVelocity(entity.speed * math.cos(entity.angle - (math.pi / 2)), -entity.speed * math.sin(entity.angle - (math.pi / 2)))
 	entity.body:setAngle(-entity.angle)
 	entity.body:setBullet(true)

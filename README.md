@@ -6,7 +6,7 @@ It is still in development. To run it on Linux, download the files and run
 ```
 love ./
 ```
-on the root folder (where ```main-lua``` is located). Make sure you have LÖVE 11.0 or higher installed.
+on the root folder (where ```main.lua``` is located). Make sure you have LÖVE 11.0 or higher installed.
 
 You can also run it on Windows or wherever LÖVE runs, which can be done by learning how to do that.
 
