@@ -17,6 +17,7 @@ local state = {
 state.player.left = false
 state.player.right = false
 state.player.firebuffer = false
+state.player.bullets = 0
 state.player.firehold = false
 state.player.alive = true
 state.player.lives = 3
@@ -69,7 +70,7 @@ state.update = function(self, dt)
 				self.win = true
 			end
 		else
-			self.pace = 55 / self.invader.count
+			self.pace = (55 / self.invader.count)^1.5
 		end
 	end
 end

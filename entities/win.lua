@@ -12,7 +12,7 @@ return function()
     entity.y = love.graphics.getHeight() / 2 - entity.h / 2
     
     local timer = 0
-    local string = "YOU WIN!"
+    local string = "YOU WIN"
     
     entity.draw = function(self)
         love.graphics.setColor(love.graphics.getBackgroundColor())
