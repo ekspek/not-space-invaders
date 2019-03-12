@@ -5,14 +5,14 @@ local pressmap = {
 	space = function() state.player.firebuffer = true end,
 	left = function() state.player.left = true end,
 	right = function() state.player.right = true end,
-	--f = function() state.player.firehold = true end,
+	f = function() state.player.firehold = true end,
 }
 
 local releasemap = {
 	space = function() state.player.firebuffer = false end,
 	left = function() state.player.left = false end,
 	right = function() state.player.right = false end,
-	--f = function() state.player.firehold = false end,
+	f = function() state.player.firehold = false end,
 }
 
 local pressmap_joystick = {

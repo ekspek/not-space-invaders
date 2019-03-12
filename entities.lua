@@ -39,4 +39,8 @@ for i = 1,4 do
 	table.insert(entities, barrier((love.graphics.getWidth() / 5) * i, love.graphics.getHeight() * 0.8))
 end
 
+entities.update = function(self, dt)
+	
+end
+
 return entities

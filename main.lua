@@ -36,16 +36,18 @@ function love.update(dt)
 		-- has been pressed and the current selected entity is the player
 		-- This was necessary to get the player's position
 		if entity.id == 'player' then
-			if state.player.firebuffer and not state.frozen then
+			if state.player.firebuffer and state.player.bullets <= 0 and not state.frozen then
 				table.insert(entities, bullet(math.floor(entity.x + (entity.w / 2)), entity.y - 5))
 				state.player.firebuffer = false
 			end
 
-			---[[ debug test option
+			--[[ debug test option
 			if state.player.firehold and not state.frozen then
 				table.insert(entities, bullet(math.floor(entity.x + (entity.w / 2)), entity.y - 5))
 			end
 			--]]
+			
+			state.player.bullets = 0
 		end
 
 		if (entity.id == 'invader1' or entity.id == 'invader2' or entity.id == 'invader3') and state.player.alive then
@@ -85,14 +87,18 @@ function love.update(dt)
 			world:rayCast(x2, y2, x2 - r * math.sin(theta), y2 + r * math.cos(theta), invadercheck_raycast)
 			world:rayCast(x3, y3, x3 - r * math.sin(theta), y3 + r * math.cos(theta), invadercheck_raycast)
 			
-			if not rayhitinvader then
+			if not rayhitinvader and entity.health > 0 then
 				if math.random() < 0.005 then
 					table.insert(entities, bullet_invader(math.floor(entity.x + (entity.w / 2)), entity.y + entity.h + 10, 0))
 					if entity.fire then entity:fire() end
 				end
 			end
 		end
-
+		
+		if entity.id == 'bullet' then
+			state.player.bullets = state.player.bullets + 1
+		end
+		
 		if entity.remove then
 			table.remove(entities, i)
 		else
