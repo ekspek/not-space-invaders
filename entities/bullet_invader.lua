@@ -22,7 +22,7 @@ return function(x,y,angle)
 	entity.fixture:setUserData(entity)
 	
 	local ox, oy, mass, inertia = entity.body:getMassData()
-	entity.body:setMassData(ox, oy, mass, inertia)
+	entity.body:setMassData(ox, oy, mass + 0.1, inertia)
 	
 	entity.body:setLinearVelocity(entity.speed * math.cos(entity.angle - (math.pi / 2)), -entity.speed * math.sin(entity.angle - (math.pi / 2)))
 	entity.body:setAngle(-entity.angle)
