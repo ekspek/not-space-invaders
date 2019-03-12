@@ -57,25 +57,36 @@ function love.update(dt)
 				invader_outside_left = true
 			end
 			
-			local x, y = entity.body:getPosition()
+			-- Invader free space checking mechanism
+			--
+			-- Before firing, every invader has to check for free space
+			-- below it to make sure it doesn't hit another invader
+			-- This is done by casting two rays from each invader's
+			-- lower side and checking for collisions with other invaders
+			-- If none are found the firing is validated
+			local _, _, x2, y2, x3, y3, _, _ = entity.body:getWorldPoints(entity.shape:getPoints())
 			local theta = entity.body:getAngle()
 			local r = 100
 			local rayhitinvader = false
 			
-			world:rayCast(x, y, x - r * math.sin(theta), y + r * math.cos(theta),
-				function(fixture, x, y, xn, yn, fraction)
-					local data = fixture:getUserData()
-					if data.id == 'invader1' or data.id == 'invader2' or data.id == 'invader3' then
-						rayhitinvader = true
-						return 1
-					else
-						return 0
-					end
+			x2 = x2 + 5
+			x3 = x3 - 5
+			
+			local invadercheck_raycast = function(fixture, x, y, xn, yn, fraction)
+				local data = fixture:getUserData()
+				if data.id == 'invader1' or data.id == 'invader2' or data.id == 'invader3' then
+					rayhitinvader = true
+					return 1
+				else
+					return 0
 				end
-			)
+			end
+			
+			world:rayCast(x2, y2, x2 - r * math.sin(theta), y2 + r * math.cos(theta), invadercheck_raycast)
+			world:rayCast(x3, y3, x3 - r * math.sin(theta), y3 + r * math.cos(theta), invadercheck_raycast)
 			
 			if not rayhitinvader then
-				if math.random() < 0.001 then
+				if math.random() < 0.005 then
 					table.insert(entities, bullet_invader(math.floor(entity.x + (entity.w / 2)), entity.y + entity.h + 10, 0))
 					if entity.fire then entity:fire() end
 				end
