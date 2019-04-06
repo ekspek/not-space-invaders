@@ -14,9 +14,9 @@ local entities = {
 	border(love.graphics.getWidth(), 0, 10, love.graphics.getHeight()),
 	border_top(0,0),
 	border_bottom(0, love.graphics.getHeight() - 30),
-	
+
 	player(love.graphics.getWidth() / 2 - 16, love.graphics.getHeight() * 0.9),
-	--debug(),
+	debug(),
 }
 
 for i = 1,11 do
@@ -40,7 +40,7 @@ for i = 1,4 do
 end
 
 entities.update = function(self, dt)
-	
+
 end
 
 return entities

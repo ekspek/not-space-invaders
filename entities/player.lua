@@ -15,7 +15,7 @@ return function(x,y)
 	entity.quads_death = {}
 	local death_frame = 0
 	local death_timer = 0
-	
+
 	entity.body = love.physics.newBody(world, entity.x, entity.y, 'kinematic')
 	entity.shape = love.physics.newRectangleShape(entity.w, entity.h - 3 * 2)
 	entity.fixture = love.physics.newFixture(entity.body, entity.shape)
@@ -30,7 +30,7 @@ return function(x,y)
 
 	entity.update = function(self, dt)
 		self.x, self.y = self.body:getWorldPoints(self.shape:getPoints())
-		
+
 		if state.player.left == state.player.right or state.frozen then
 			self.body:setLinearVelocity(0,0)
 		elseif state.player.left then
@@ -46,7 +46,7 @@ return function(x,y)
 				self.body:setLinearVelocity(0,0)
 			end
 		end
-		
+
 		if not state.player.alive then
 			death_frame = (death_frame + 12 * dt) % 2
 			death_timer = death_timer + dt

@@ -44,13 +44,13 @@ end
 state.update = function(self, dt)
 	if not self.player.alive then
 		self:freeze()
-		
+
 		if not self.gameover then
 			if self.timer < 2 then
 				self.timer = self.timer + dt
 			else
 				self.player.lives = self.player.lives - 1
-				
+
 				if self.player.lives > 0 then
 					self:unfreeze()
 				else
@@ -61,7 +61,7 @@ state.update = function(self, dt)
 	else
 		self.frame_double = (self.frame_double + dt * self.pace) % 2
 		self.frame = math.floor(self.frame_double)
-		
+
 		if self.invader.count <= 0 or self.win then
 			self:freeze()
 			if self.timer < 1 then
