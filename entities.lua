@@ -16,7 +16,7 @@ local entities = {
 	border_bottom(0, love.graphics.getHeight() - 30),
 
 	player(love.graphics.getWidth() / 2 - 16, love.graphics.getHeight() * 0.9),
-	debug(),
+	--debug(),
 }
 
 for i = 1,11 do

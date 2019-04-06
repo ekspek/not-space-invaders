@@ -41,7 +41,7 @@ function love.update(dt)
 				state.player.firebuffer = false
 			end
 
-			--[[ debug test option
+			---[[ debug test option
 			if state.player.firehold and not state.frozen then
 				table.insert(entities, bullet(math.floor(entity.x + (entity.w / 2)), entity.y - 5))
 			end
@@ -57,6 +57,11 @@ function love.update(dt)
 				invader_outside_right = true
 			elseif entity.outside_left then
 				invader_outside_left = true
+			end
+
+			if entity.overflow then
+				state.gameover = true
+				state.player.alive = false
 			end
 
 			-- Invader free space checking mechanism
