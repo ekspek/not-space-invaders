@@ -7,12 +7,12 @@ return function(x,y,invader)
 		x = x,
 		y = y,
 		step = 1,
-		
+
 		-- Flags to warn if the horde needs to change directions,
 		-- NOT if an invader is outside of the screen.
 		outside_right = false,
 		outside_left = false,
-		
+
 		-- Each invader dies when their health reaches zero
 		-- and they stop moving (or get to a really low velocity).
 		-- Dying makes the burst animation play, and when this ends
@@ -20,14 +20,14 @@ return function(x,y,invader)
 		alive = true,
 		remove = false,
 		health = 1,
-		
+
 		-- Code to handle projectile fire
 		firebuffer = false,
 	}
-	
+
 	local death_timer = 0.5
 	local step_frame = state.frame
-	
+
 	if invader == 1 then
 		entity.w = 12 * 2
 		entity.h = 8 * 2
@@ -38,21 +38,21 @@ return function(x,y,invader)
 		entity.w = 8 * 2
 		entity.h = 8 * 2
 	end
-	
+
 	entity.body = love.physics.newBody(world, x, y, 'dynamic')
 	entity.shape = love.physics.newRectangleShape(entity.w, entity.h)
 	entity.fixture = love.physics.newFixture(entity.body, entity.shape)
 	entity.fixture:setUserData(entity)
-	
+
 	local ox, oy, mass, inertia = entity.body:getMassData()
 	entity.body:setMassData(ox, oy, mass, inertia)
-	
+
 	entity.body:setLinearVelocity(0,0)
 	entity.body:setLinearDamping(1)
 	entity.body:setAngularDamping(1)
-	
+
 	entity.quads = {}
-	
+
 	entity.load = function(self)
 		if invader == 1 then
 			self.image = love.graphics.newImage("sprites/inv1.png")
@@ -67,7 +67,7 @@ return function(x,y,invader)
 			table.insert(self.quads, love.graphics.newQuad(0, 0, 8, 8, self.image:getDimensions()))
 			table.insert(self.quads, love.graphics.newQuad(8, 0, 8, 8, self.image:getDimensions()))
 		end
-		
+
 		self.image_death = love.graphics.newImage("sprites/burst.png")
 	end
 
@@ -83,20 +83,20 @@ return function(x,y,invader)
 		local xmax = math.max(x1, x2, x3, x4)
 		local ymin = math.min(y1, y2, y3, y4)
 		local ymax = math.max(y1, y2, y3, y4)
-		
+
 		self.remove = self.remove
 			or xmax < -border_out
 			or xmin > love.graphics.getWidth() + border_out
 			or ymax < -border_out
 			or ymin > love.graphics.getHeight() + border_out
-		
+
 		self.outside_left = xmin < border_in
 		self.outside_right = xmax > love.graphics.getWidth() - border_in
-		
+
 		-- Resetting the angle when velocity is low
 		local dx, dy = self.body:getLinearVelocity()
 		local dv = math.abs(dx) + math.abs(dy)
-		
+
 		if dv < 2 and self.body:getAngularVelocity() < 0.1 then
 			if self.health <= 0 then
 				self.alive = false
@@ -116,7 +116,7 @@ return function(x,y,invader)
 				end
 			end
 		end
-		
+
 		if not self.alive then
 			death_timer = death_timer - dt
 			if death_timer <= 0 then
@@ -130,7 +130,7 @@ return function(x,y,invader)
 	entity.draw = function(self)
 		local x, y = self.body:getWorldPoints(self.shape:getPoints())
 		self.x = x1
-        self.y = y1
+		self.y = y1
 		if not self.alive then
 			love.graphics.setColor(1,1,1,0.5)
 			love.graphics.draw(self.image_death, x, y, self.body:getAngle(), 2, 2)
@@ -139,12 +139,12 @@ return function(x,y,invader)
 			love.graphics.draw(self.image, self.quads[state.frame + 1], x, y, self.body:getAngle(), 2, 2)
 		end
 	end
-	
+
 	-- Mostly a debugging method for now
 	entity.fire = function(self)
 		self.firebuffer = true
 	end
-	
+
 	entity.postSolve = function(self, id)
 		for _, id_list in pairs({'bullet', 'bullet_invader'}) do
 			if id == id_list then

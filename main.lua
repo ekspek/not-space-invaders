@@ -9,11 +9,11 @@ local win = require 'entities.win'
 
 function love.load()
 	local step_frame = 0
-	
+
 	love.graphics.setDefaultFilter('linear', 'nearest', 0)
-	
+
 	love.graphics.setBackgroundColor(0,0,0)
-	
+
 	for _, entity in ipairs(entities) do
 		if entity.load then entity:load() end
 	end
@@ -46,19 +46,19 @@ function love.update(dt)
 				table.insert(entities, bullet(math.floor(entity.x + (entity.w / 2)), entity.y - 5))
 			end
 			--]]
-			
+
 			state.player.bullets = 0
 		end
 
 		if (entity.id == 'invader1' or entity.id == 'invader2' or entity.id == 'invader3') and state.player.alive then
 			state.invader.count = state.invader.count + 1
-			
+
 			if entity.outside_right then
 				invader_outside_right = true
 			elseif entity.outside_left then
 				invader_outside_left = true
 			end
-			
+
 			-- Invader free space checking mechanism
 			--
 			-- Before firing, every invader has to check for free space
@@ -70,10 +70,10 @@ function love.update(dt)
 			local theta = entity.body:getAngle()
 			local r = 100
 			local rayhitinvader = false
-			
+
 			x2 = x2 + 5
 			x3 = x3 - 5
-			
+
 			local invadercheck_raycast = function(fixture, x, y, xn, yn, fraction)
 				local data = fixture:getUserData()
 				if data.id == 'invader1' or data.id == 'invader2' or data.id == 'invader3' then
@@ -83,10 +83,10 @@ function love.update(dt)
 					return 0
 				end
 			end
-			
+
 			world:rayCast(x2, y2, x2 - r * math.sin(theta), y2 + r * math.cos(theta), invadercheck_raycast)
 			world:rayCast(x3, y3, x3 - r * math.sin(theta), y3 + r * math.cos(theta), invadercheck_raycast)
-			
+
 			if not rayhitinvader and entity.health > 0 then
 				if math.random() < 0.005 then
 					table.insert(entities, bullet_invader(math.floor(entity.x + (entity.w / 2)), entity.y + entity.h + 10, 0))
@@ -94,11 +94,11 @@ function love.update(dt)
 				end
 			end
 		end
-		
+
 		if entity.id == 'bullet' then
 			state.player.bullets = state.player.bullets + 1
 		end
-		
+
 		if entity.remove then
 			table.remove(entities, i)
 		else
@@ -111,7 +111,7 @@ function love.update(dt)
 	-- changes per second
 	if step_frame ~= state.frame then
 		step_frame = state.frame
-		
+
 		if invader_outside_right then
 			if state.invader.direction == 'down' then
 				state.invader.direction = 'left'
@@ -130,7 +130,7 @@ function love.update(dt)
 			end
 		end
 	end
-	
+
 	if state.gameover then
 		table.insert(entities, gameover())
 	elseif state.win then
@@ -140,9 +140,9 @@ function love.update(dt)
 	if state.player.alive then
 		world:update(dt)
 	end
-	
+
 	state:update(dt)
-	
+
 	-- 30FPS mode
 	--love.timer.sleep(1/30)
 end
@@ -150,18 +150,18 @@ end
 function love.draw(dt)
 	for _, entity in ipairs(entities) do
 		if entity.draw then entity:draw() end
-		
+
 		--[[
 		if entity.body then
 			love.graphics.setColor(1,0,0)
 			love.graphics.polygon('line', entity.body:getWorldPoints(entity.shape:getPoints()))
 		end
-		
+
 		if entity.id == 'invader1' or entity.id == 'invader2' or entity.id == 'invader3' then
 			local x, y = entity.body:getPosition() --entity.body:getWorldPoints(entity.shape:getPoints())
 			local theta = entity.body:getAngle()
 			local r = 100
-			
+
 			love.graphics.setColor(0,1,0)
 			love.graphics.line(x, y, x - 100 * math.sin(theta), y + 100 * math.cos(theta))
 		end
