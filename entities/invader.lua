@@ -23,6 +23,9 @@ return function(x,y,invader)
 
 		-- Code to handle projectile fire
 		firebuffer = false,
+
+		-- Flag to check if invader is below the game over treshold
+		overflow = false,
 	}
 
 	local death_timer = 0.5
@@ -90,6 +93,8 @@ return function(x,y,invader)
 			or ymax < -border_out
 			or ymin > love.graphics.getHeight() + border_out
 
+		self.overflow = self.overflow or ymax > 450
+
 		self.outside_left = xmin < border_in
 		self.outside_right = xmax > love.graphics.getWidth() - border_in
 
@@ -104,7 +109,7 @@ return function(x,y,invader)
 				self.body:setAngle(0)
 				if step_frame ~= state.frame then
 					step_frame = state.frame
-					
+
 					local x, y = self.body:getPosition()
 					if state.invader.direction == 'right' then
 						self.body:setPosition(x + 2, y)
