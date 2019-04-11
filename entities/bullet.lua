@@ -39,6 +39,9 @@ return function(x,y)
 			or xmin > love.graphics.getWidth() + border
 			or ymax < -border
 			or ymin > love.graphics.getHeight() + border
+
+		local vx, vy = self.body:getLinearVelocity()
+		if math.abs(vy) < 50 then self.remove = true end
 	end
 
 	entity.draw = function(self)

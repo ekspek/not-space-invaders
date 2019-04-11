@@ -11,7 +11,8 @@ local state = {
 	credits = 0,
 	frozen = false,
 	gameover = false,
-	win = false,
+	reset = false,
+	level = 1,
 }
 
 state.player.left = false
@@ -62,14 +63,11 @@ state.update = function(self, dt)
 		self.frame_double = (self.frame_double + dt * self.pace) % 2
 		self.frame = math.floor(self.frame_double)
 
-		if self.invader.count <= 0 or self.win then
-			self:freeze()
-			if self.timer < 1 then
-				self.timer = self.timer + dt
-			else
-				self.win = true
-			end
+		if self.invader.count <= 0 then
+			self.reset = true
+			self.player.lives = self.player.lives + 1
 		else
+			self.reset = false
 			self.pace = (55 / self.invader.count)^1.5
 		end
 	end
