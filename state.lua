@@ -68,7 +68,7 @@ state.update = function(self, dt)
 			self.player.lives = self.player.lives + 1
 		else
 			self.reset = false
-			self.pace = (55 / self.invader.count)^1.5
+			self.pace = (55 / self.invader.count)^1.5 * (1 + ((self.level - 1) * 0.5))
 		end
 	end
 end
