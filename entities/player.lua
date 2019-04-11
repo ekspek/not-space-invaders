@@ -10,6 +10,7 @@ return function(x,y)
 		h = 8 * 2,
 		speed = 100, -- pixels per second
 		alive = true,
+		margin = 2,
 	}
 
 	entity.quads_death = {}
@@ -34,13 +35,13 @@ return function(x,y)
 		if state.player.left == state.player.right or state.frozen then
 			self.body:setLinearVelocity(0,0)
 		elseif state.player.left then
-			if self.x - self.speed * dt > 10 then
+			if self.x - self.speed * dt > self.margin then
 				self.body:setLinearVelocity(-self.speed, 0)
 			else
 				self.body:setLinearVelocity(0,0)
 			end
 		elseif state.player.right then
-			if self.x + self.speed * dt < love.graphics.getWidth() - self.w - 10 then
+			if self.x + self.speed * dt < love.graphics.getWidth() - self.w - self.margin then
 				self.body:setLinearVelocity(self.speed, 0)
 			else
 				self.body:setLinearVelocity(0,0)
