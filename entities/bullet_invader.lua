@@ -54,6 +54,9 @@ return function(x,y,angle)
 			or ymax < -border
 			or ymin > love.graphics.getHeight() + border
 
+		local vx, vy = self.body:getLinearVelocity()
+		if math.abs(vy) < 50 then self.remove = true end
+
 		bullet_frame = (bullet_frame + 12 * dt) % 4
 	end
 
