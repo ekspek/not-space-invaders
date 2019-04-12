@@ -26,4 +26,6 @@ This project is inspired by the work of [Stabyourself.net](http://stabyourself.n
 
 The sprites used were taken from [this sprite sheet](https://www.spriters-resource.com/arcade/spaceinv/sheet/8593/) at The Spriters Resource. All credits go to its original submitter.
 
+Sound effects were pulled from [Classicgaming.gg](www.classicgaming.cc/classics/space-invaders/sounds)'s page on Space Invaders.
+
 Also full acknowledgements to the developers of the original arcade Space Invaders. All rights reserved to whoever owns them (I'm guessing Taito, but I'm no lawyer).
