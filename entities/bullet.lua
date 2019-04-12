@@ -22,6 +22,9 @@ return function(x,y)
 	entity.body:setLinearVelocity(0, -entity.speed)
 	entity.body:setBullet(true)
 
+	sound = love.audio.newSource("sfx/shoot.wav", "static")
+	sound:play()
+
 	entity.update = function(self, dt)
 		-- Check if outside of playable area
 		-- Could be replaced by checking for collision with borders instead

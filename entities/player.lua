@@ -27,6 +27,8 @@ return function(x,y)
 		self.image_death = love.graphics.newImage("sprites/player_death.png")
 		table.insert(self.quads_death, love.graphics.newQuad(-1, 0, 13, 8, self.image_death:getDimensions()))
 		table.insert(self.quads_death, love.graphics.newQuad(16, 0, 13, 8, self.image_death:getDimensions()))
+
+		self.sound_death = love.audio.newSource("sfx/explosion.wav", "static")
 	end
 
 	entity.update = function(self, dt)
@@ -68,6 +70,7 @@ return function(x,y)
 	
 	entity.postSolve = function(self, id)
 		if id == 'bullet_invader' or id == 'bullet' then
+			self.sound_death:play()
 			state.player.alive = false
 		end
 	end
