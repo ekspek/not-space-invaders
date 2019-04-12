@@ -8,9 +8,6 @@ sprites/spritesheet_16x16.xcf
 sprites/bullet_old.png
 sprites/font.png
 
-# Fonts
-fonts/
-
 # Compiled Lua sources
 luac.out
 
