@@ -5,6 +5,7 @@ local entities = require 'entities'
 local bullet = require 'entities.bullet'
 local bullet_invader = require 'entities.bullet_invader'
 local gameover = require 'entities.gameover'
+local sfx = require 'sfx'
 
 function love.load()
 	local step_frame = 0
@@ -124,6 +125,8 @@ function love.update(dt)
 	-- changes per second
 	if step_frame ~= state.frame then
 		step_frame = state.frame
+
+		sfx.invadermove:update()
 
 		if invader_outside_right then
 			if state.invader.direction == 'down' then

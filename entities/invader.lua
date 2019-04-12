@@ -72,6 +72,9 @@ return function(x,y,invader)
 		end
 
 		self.image_death = love.graphics.newImage("sprites/burst.png")
+
+		self.sound_hit = love.audio.newSource("sfx/invaderkilled.wav", "static")
+		self.sound_death = love.audio.newSource("sfx/ufo_highpitch.wav", "static")
 	end
 
 	entity.update = function(self, dt)
@@ -104,6 +107,9 @@ return function(x,y,invader)
 
 		if dv < 2 and self.body:getAngularVelocity() < 0.1 then
 			if self.health <= 0 then
+				if self.alive == true then
+					self.sound_death:play()
+				end
 				self.alive = false
 			else
 				self.body:setAngle(0)
@@ -153,6 +159,7 @@ return function(x,y,invader)
 	entity.postSolve = function(self, id)
 		for _, id_list in pairs({'bullet', 'bullet_invader'}) do
 			if id == id_list then
+				self.sound_hit:play()
 				if self.health > 0 then
 					self.health = self.health - 1
 				else
