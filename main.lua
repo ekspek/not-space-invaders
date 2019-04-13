@@ -80,13 +80,15 @@ function love.update(dt)
 			-- This is done by casting two rays from each invader's
 			-- lower side and checking for collisions with other invaders
 			-- If none are found the firing is validated
-			local _, _, x2, y2, x3, y3, _, _ = entity.body:getWorldPoints(entity.shape:getPoints())
+			local _, _, _, _, x3, y3, x4, y4 = entity.body:getWorldPoints(entity.shape:getPoints())
 			local theta = entity.body:getAngle()
 			local r = 100
 			local rayhitinvader = false
 
-			x2 = x2 + 5
-			x3 = x3 - 5
+			x3 = x3 - 5 * math.cos(theta)
+			y3 = y3 - 5 * math.sin(theta)
+			x4 = x4 + 5 * math.cos(theta)
+			y4 = y4 + 5 * math.sin(theta)
 
 			local invadercheck_raycast = function(fixture, x, y, xn, yn, fraction)
 				local data = fixture:getUserData()
@@ -98,8 +100,8 @@ function love.update(dt)
 				end
 			end
 
-			world:rayCast(x2, y2, x2 - r * math.sin(theta), y2 + r * math.cos(theta), invadercheck_raycast)
 			world:rayCast(x3, y3, x3 - r * math.sin(theta), y3 + r * math.cos(theta), invadercheck_raycast)
+			world:rayCast(x4, y4, x4 - r * math.sin(theta), y4 + r * math.cos(theta), invadercheck_raycast)
 
 			if not rayhitinvader and entity.health > 0 then
 				if math.random() < 0.005 then
@@ -165,19 +167,25 @@ function love.draw(dt)
 	for _, entity in ipairs(entities) do
 		if entity.draw then entity:draw() end
 
-		--[[
+		---[[
 		if entity.body then
 			love.graphics.setColor(1,0,0)
 			love.graphics.polygon('line', entity.body:getWorldPoints(entity.shape:getPoints()))
 		end
 
 		if entity.id == 'invader1' or entity.id == 'invader2' or entity.id == 'invader3' then
-			local x, y = entity.body:getPosition() --entity.body:getWorldPoints(entity.shape:getPoints())
+			local _, _, _, _, x3, y3, x4, y4 = entity.body:getWorldPoints(entity.shape:getPoints())
 			local theta = entity.body:getAngle()
 			local r = 100
 
+			x3 = x3 - 5 * math.cos(theta)
+			y3 = y3 - 5 * math.sin(theta)
+			x4 = x4 + 5 * math.cos(theta)
+			y4 = y4 + 5 * math.sin(theta)
+
 			love.graphics.setColor(0,1,0)
-			love.graphics.line(x, y, x - 100 * math.sin(theta), y + 100 * math.cos(theta))
+			love.graphics.line(x3, y3, x3 - r * math.sin(theta), y3 + r * math.cos(theta))
+			love.graphics.line(x4, y4, x4 - r * math.sin(theta), y4 + r * math.cos(theta))
 		end
 		--]]
 	end
