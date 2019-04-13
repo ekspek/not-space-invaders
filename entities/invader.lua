@@ -78,8 +78,11 @@ return function(x,y,invader)
 	end
 
 	entity.update = function(self, dt)
+		local paceModifier = function(pixels)
+			return math.floor(pixels + (pixels * (state.pace^0.15 - 1)))
+		end
+
 		-- Check if outside of playable area
-		-- Could be replaced by checking for collision with borders instead
 		local border_out = 0 -- positive means towards the outside of the screen
 		local border_in = 10 -- positive means towards the inside of the screen
 		local x1, y1, x2, y2, x3, y3, x4, y4 = self.body:getWorldPoints(self.shape:getPoints())
@@ -98,8 +101,8 @@ return function(x,y,invader)
 
 		self.overflow = self.overflow or ymax > 450
 
-		self.outside_left = xmin < border_in
-		self.outside_right = xmax > love.graphics.getWidth() - border_in
+		self.outside_left = xmin < paceModifier(border_in)
+		self.outside_right = xmax > love.graphics.getWidth() - paceModifier(border_in)
 
 		-- Resetting the angle when velocity is low
 		local dx, dy = self.body:getLinearVelocity()
@@ -118,9 +121,9 @@ return function(x,y,invader)
 
 					local x, y = self.body:getPosition()
 					if state.invader.direction == 'right' then
-						self.body:setPosition(x + 2, y)
+						self.body:setPosition(x + paceModifier(2), y)
 					elseif state.invader.direction == 'left' then
-						self.body:setPosition(x - 2, y)
+						self.body:setPosition(x - paceModifier(2), y)
 					elseif state.invader.direction == 'down' then
 						self.body:setPosition(x, y + 10)
 					end

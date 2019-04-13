@@ -60,15 +60,22 @@ state.update = function(self, dt)
 			end
 		end
 	else
+		-- Determines which frame is active right now (out of 2)
+		-- self.frame.double controls the timing within the frame
+		-- self.frame indicates the current frame
 		self.frame_double = (self.frame_double + dt * self.pace) % 2
 		self.frame = math.floor(self.frame_double)
 
+		-- When the invader count is zero, activates the rest flag,
+		-- increases the player's lives by one and resets the horde
+		-- direction
 		if self.invader.count <= 0 then
 			self.reset = true
 			self.player.lives = self.player.lives + 1
+			self.invader.direction = 'right'
 		else
 			self.reset = false
-			self.pace = (55 / self.invader.count)^1.5 * (1 + ((self.level - 1) * 0.5))
+			self.pace = math.floor((55 / self.invader.count)^1.5 * (1 + ((self.level - 1) * 0.3)))
 		end
 	end
 end
