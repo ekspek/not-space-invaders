@@ -2,13 +2,15 @@ local state = require 'state'
 local world = require 'world'
 
 return function(x,y)
+	local health_init = 20
+
 	local entity = {
 		id = 'border',
 		x = x,
 		y = y,
 		w = 22 * 2,
 		h = 16 * 2,
-		health = 10,
+		health = health_init,
 	}
 
 	entity.body = love.physics.newBody(world, entity.x, entity.y, 'static')
@@ -29,7 +31,7 @@ return function(x,y)
 
 	entity.draw = function(self)
 		local x, y = self.body:getWorldPoints(self.shape:getPoints())
-		love.graphics.setColor(0,1,0,self.health / 10)
+		love.graphics.setColor(0,1,0,self.health / health_init)
 		love.graphics.draw(self.image, x, y, self.body:getAngle(), 2, 2)
 	end
 
