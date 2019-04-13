@@ -62,9 +62,9 @@ function love.update(dt)
 		if (entity.id == 'invader1' or entity.id == 'invader2' or entity.id == 'invader3') and state.player.alive then
 			state.invader.count = state.invader.count + 1
 
-			if entity.outside_right then
+			if entity.outside_right and entity.health > 0 then
 				invader_outside_right = true
-			elseif entity.outside_left then
+			elseif entity.outside_left and entity.health > 0 then
 				invader_outside_left = true
 			end
 
@@ -82,7 +82,7 @@ function love.update(dt)
 			-- If none are found the firing is validated
 			local _, _, _, _, x3, y3, x4, y4 = entity.body:getWorldPoints(entity.shape:getPoints())
 			local theta = entity.body:getAngle()
-			local r = 100
+			local r = 150
 			local rayhitinvader = false
 
 			x3 = x3 - 5 * math.cos(theta)
@@ -167,7 +167,7 @@ function love.draw(dt)
 	for _, entity in ipairs(entities) do
 		if entity.draw then entity:draw() end
 
-		---[[
+		--[[
 		if entity.body then
 			love.graphics.setColor(1,0,0)
 			love.graphics.polygon('line', entity.body:getWorldPoints(entity.shape:getPoints()))
@@ -176,7 +176,7 @@ function love.draw(dt)
 		if entity.id == 'invader1' or entity.id == 'invader2' or entity.id == 'invader3' then
 			local _, _, _, _, x3, y3, x4, y4 = entity.body:getWorldPoints(entity.shape:getPoints())
 			local theta = entity.body:getAngle()
-			local r = 100
+			local r = 150
 
 			x3 = x3 - 5 * math.cos(theta)
 			y3 = y3 - 5 * math.sin(theta)
