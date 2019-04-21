@@ -1,7 +1,5 @@
-local invader = require 'entities.invader'
 local bullet = require 'entities.bullet'
 local bullet_invader = require 'entities.bullet_invader'
-local barrier = require 'entities.barrier'
 local border = require 'entities.border'
 local border_bottom = require 'entities.border_bottom'
 local border_top = require 'entities.border_top'
@@ -9,7 +7,8 @@ local gameover = require 'entities.gameover'
 local debug = require 'entities.debug'
 
 local Player = require 'entities.player'
-local Rectangle = require 'entities.rectangle'
+local Invader = require 'entities.invader'
+local Barrier = require 'entities.barrier'
 
 local entities = {
 	--[[
@@ -20,10 +19,13 @@ local entities = {
 
 	--debug(),
 	--]]
-	--Invader(love.graphics.getWidth(), love.graphics.getHeight(), 2),
-	Rectangle(20, love.graphics.getHeight() / 2, 40, 30),
+	Invader(love.graphics.getWidth() / 2, love.graphics.getHeight() / 2, 2),
 	Player(love.graphics.getWidth() / 2 - 16, love.graphics.getHeight() * 0.9),
 }
+
+for i = 1,4 do
+	table.insert(entities, Barrier((love.graphics.getWidth() / 5) * i, love.graphics.getHeight() * 0.8))
+end
 
 --[[
 for i = 1,11 do
@@ -40,10 +42,6 @@ for j = 4,5 do
 	for i = 1,11 do
 		table.insert(entities, invader((20 + ((love.graphics.getWidth() - 40) / 11) * i) - 16, 100 + j * 30, 1))
 	end
-end
-
-for i = 1,4 do
-	table.insert(entities, barrier((love.graphics.getWidth() / 5) * i, love.graphics.getHeight() * 0.8))
 end
 
 entities.respawnInvaders = function(self, dt)
