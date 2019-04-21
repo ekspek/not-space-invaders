@@ -146,6 +146,8 @@ function love.update(dt)
 			elseif state.invader.direction == 'left' then
 				state.invader.direction = 'down'
 			end
+		elseif state.invader.direction == 'down' then
+			state.invader.direction = 'right'
 		end
 	end
 

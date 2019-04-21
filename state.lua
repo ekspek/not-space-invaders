@@ -12,7 +12,7 @@ local state = {
 	frozen = false,
 	gameover = false,
 	reset = false,
-	level = 1,
+	level = 0,
 }
 
 state.player.left = false
@@ -75,7 +75,7 @@ state.update = function(self, dt)
 			self.invader.direction = 'right'
 		else
 			self.reset = false
-			self.pace = math.floor((55 / self.invader.count)^1.5 * (1 + ((self.level - 1) * 0.3)))
+			self.pace = math.max(1, math.floor((55 / self.invader.count)^1.5 * (1 + ((self.level - 1) * 0.3))))
 		end
 	end
 end

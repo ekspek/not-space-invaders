@@ -3,10 +3,13 @@
 *.swp
 
 # GIMP sprite sheet
+*.xcf
 sprites/spritesheet_16x16.png
-sprites/spritesheet_16x16.xcf
 sprites/bullet_old.png
 sprites/font.png
+
+# Window icon (not working)
+sprites/icon.png
 
 # Compiled Lua sources
 luac.out
