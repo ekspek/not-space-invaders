@@ -16,5 +16,8 @@ function Rectangle:update(dt)
 end
 
 function Rectangle:draw()
+	love.graphics.setColor(1,1,1,1)
 	love.graphics.rectangle('fill', self.x, self.y, self.w, self.h)
 end
+
+return Rectangle

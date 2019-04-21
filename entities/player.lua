@@ -7,6 +7,8 @@ local Entity = require 'entity'
 local Player = Class{ __includes = Entity }
 
 function Player:init(x, y)
+	Entity:init()
+
 	self.x = x
 	self.y = y
 	self.w = 13 * 2
@@ -20,7 +22,6 @@ function Player:init(x, y)
 	self.death_frame = 0
 	self.death_timer = 0
 
-	love.graphics.setDefaultFilter('linear', 'nearest', 0)
 	self.body = love.physics.newBody(world, self.x, self.y, 'kinematic')
 	self.shape = love.physics.newRectangleShape(self.w, self.h - 3 * 2)
 	self.fixture = love.physics.newFixture(self.body, self.shape)
