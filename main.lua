@@ -23,10 +23,12 @@ function love.update(dt)
 	local invader_outside_left = false
 	local invader_outside_right = false
 
+	--[[
 	if state.reset == true then
 		entities.respawnInvaders(dt)
 		state.level = state.level + 1
 	end
+	--]]
 
 	state.invader.count = 0
 	local i = 1

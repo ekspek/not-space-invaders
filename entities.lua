@@ -19,6 +19,7 @@ local entities = {
 	--debug(),
 }
 
+--[[
 for i = 1,11 do
 	table.insert(entities, invader((20 + ((love.graphics.getWidth() - 40) / 11) * i) - 16, 100 + 30, 3))
 end
@@ -64,6 +65,7 @@ entities.respawnInvaders = function(self, dt)
 		if entity.load then entity:load() end
 	end
 end
+--]]
 
 entities.update = function(self, dt)
 end
