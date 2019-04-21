@@ -25,7 +25,7 @@ return function(x,y)
 		love.graphics.setColor(0,1,0,1)
 		love.graphics.rectangle('fill', x, y, self.w, 2)
 
-		for i = 1, (state.player.lives - 1) do
+		for i = 1, math.min(8, (state.player.lives - 1)) do
 			love.graphics.draw(self.image, x + 15 + i * 32, y + 4, nil, 2, 2)
 		end
 

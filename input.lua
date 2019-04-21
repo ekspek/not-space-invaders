@@ -19,12 +19,14 @@ local pressmap_joystick = {
 	dpleft = pressmap.left,
 	dpright = pressmap.right,
 	y = pressmap.f,
+	b = pressmap.space,
 }
 
 local releasemap_joystick = {
 	dpleft = releasemap.left,
 	dpright = releasemap.right,
 	y = releasemap.f,
+	b = releasemap.space,
 }
 
 return {
