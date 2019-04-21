@@ -1,4 +1,3 @@
-local player = require 'entities.player'
 local invader = require 'entities.invader'
 local bullet = require 'entities.bullet'
 local bullet_invader = require 'entities.bullet_invader'
@@ -9,14 +8,21 @@ local border_top = require 'entities.border_top'
 local gameover = require 'entities.gameover'
 local debug = require 'entities.debug'
 
+local Player = require 'entities.player'
+local Rectangle = require 'entities.rectangle'
+
 local entities = {
+	--[[
 	border(-10, 0, 10, love.graphics.getHeight()),
 	border(love.graphics.getWidth(), 0, 10, love.graphics.getHeight()),
 	border_top(0,0),
 	border_bottom(0, love.graphics.getHeight() - 30),
 
-	player(love.graphics.getWidth() / 2 - 16, love.graphics.getHeight() * 0.9),
 	--debug(),
+	--]]
+	--Invader(love.graphics.getWidth(), love.graphics.getHeight(), 2),
+	Rectangle(20, love.graphics.getHeight() / 2, 40, 30),
+	Player(love.graphics.getWidth() / 2 - 16, love.graphics.getHeight() * 0.9),
 }
 
 --[[
