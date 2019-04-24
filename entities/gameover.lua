@@ -1,27 +1,30 @@
+local Class = require 'libs.hump.class'
+local Entity = require 'entity'
+
 local state = require 'state'
 local font = require 'font'
 
-return function()
-	local entity = {
-		id = 'gameover',
-		w = 200,
-		h = 50,
-	}
+local Gameover = Class{ __includes = Entity }
 
-	entity.x = love.graphics.getWidth() / 2 - entity.w / 2
-	entity.y = love.graphics.getHeight() / 2 - entity.h / 2
+function Gameover:init()
+	self.id = 'gameover'
+	self.w = 200
+	self.h = 50
 
-	local timer = 0
-	local string = "GAME OVER"
+	self.x = love.graphics.getWidth() / 2 - self.w / 2
+	self.y = love.graphics.getHeight() / 2 - self.h / 2
 
-	entity.draw = function(self)
-		love.graphics.setColor(love.graphics.getBackgroundColor())
-		love.graphics.rectangle('fill', entity.x, entity.y, entity.w, entity.h)
-
-		love.graphics.setFont(font)
-		love.graphics.setColor(1,1,1,1)
-		love.graphics.printf(string, entity.x, entity.y + (entity.h / 2) - (font:getHeight() / 2), entity.w, 'center')
-	end
-
-	return entity
+	self.timer = 0
+	self.string = "GAME OVER"
 end
+
+function Gameover:draw()
+	love.graphics.setColor(love.graphics.getBackgroundColor())
+	love.graphics.rectangle('fill', self.x, self.y, self.w, self.h)
+
+	love.graphics.setFont(font)
+	love.graphics.setColor(1,1,1,1)
+	love.graphics.printf(self.string, self.x, self.y + (self.h / 2) - (font:getHeight() / 2), self.w, 'center')
+end
+
+return Gameover
