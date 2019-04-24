@@ -1,49 +1,51 @@
+local Class = require 'libs.hump.class'
+local Entity = require 'entity'
 local state = require 'state'
 local world = require 'world'
 
-return function(x,y)
-	local health_init = 20
+local Barrier = Class{ __includes = Entity }
 
-	local entity = {
-		id = 'border',
-		x = x,
-		y = y,
-		w = 22 * 2,
-		h = 16 * 2,
-		health = health_init,
-	}
+function Barrier:init(x, y)
+	Entity:init()
 
-	entity.body = love.physics.newBody(world, entity.x, entity.y, 'static')
-	entity.shape = love.physics.newRectangleShape(entity.w, entity.h)
-	entity.fixture = love.physics.newFixture(entity.body, entity.shape)
-	entity.fixture:setUserData(entity)
+	self.id = 'barrier'
+	self.x = x
+	self.y = y
+	self.w = 22 * 2
+	self.h = 16 * 2
 
-	entity.load = function(self)
-		entity.image = love.graphics.newImage("sprites/barrier.png")
+	self.health_init = 20
+	self.health = self.health_init
+
+	self.body = love.physics.newBody(world, self.x, self.y, 'static')
+	self.shape = love.physics.newRectangleShape(self.w, self.h)
+	self.fixture = love.physics.newFixture(self.body, self.shape)
+	self.fixture:setUserData(self)
+
+	self.image = love.graphics.newImage("sprites/barrier.png")
+end
+
+function Barrier:update(dt)
+	if self.health <= 0 then
+		self.remove = true
+		self.fixture:destroy()
 	end
+end
 
-	entity.update = function(self, dt)
-		if self.health <= 0 then
-			self.remove = true
-			self.fixture:destroy()
-		end
-	end
+function Barrier:draw()
+	local x, y = self.body:getWorldPoints(self.shape:getPoints())
+	love.graphics.setColor(0,1,0,self.health / self.health_init)
+	love.graphics.draw(self.image, x, y, self.body:getAngle(), 2, 2)
+end
 
-	entity.draw = function(self)
-		local x, y = self.body:getWorldPoints(self.shape:getPoints())
-		love.graphics.setColor(0,1,0,self.health / health_init)
-		love.graphics.draw(self.image, x, y, self.body:getAngle(), 2, 2)
-	end
-
-	entity.postSolve = function(self, id)
-		for _, id_list in pairs({'bullet', 'bullet_invader'}) do
-			if id == id_list then
-				if self.health > 0 then
-					self.health = self.health - 1
-				end
+function Barrier:postSolve(id)
+	for _, id_list in pairs({'bullet', 'bullet_invader'}) do
+		if id == id_list then
+			if self.health > 0 then
+				self.health = self.health - 1
 			end
 		end
 	end
-
-	return entity
 end
+
+return Barrier
