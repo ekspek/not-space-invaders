@@ -136,8 +136,8 @@ function Invader:update(dt)
 	end
 
 	if not self.alive then
-		death_timer = death_timer - dt
-		if death_timer <= 0 then
+		self.death_timer = self.death_timer - dt
+		if self.death_timer <= 0 then
 			self.fixture:destroy()
 			self.remove = true
 			state:addscore(100)

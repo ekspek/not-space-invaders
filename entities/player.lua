@@ -64,12 +64,12 @@ end
 function Player:draw()
 	love.graphics.setColor(0,1,0,1)
 	if not state.player.alive then
-		if death_timer < 1 then
+		if self.death_timer < 1 then
 			love.graphics.draw(self.image_death, self.quads_death[math.floor(self.death_frame) + 1], self.x, self.y - 3 * 2, nil, 2, 2)
 		end
 	else
 		love.graphics.draw(self.image, self.x, self.y - 3 * 2, 0, 2, 2)
-		death_timer = 0
+		self.death_timer = 0
 	end
 end
 
