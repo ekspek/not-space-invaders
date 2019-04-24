@@ -32,7 +32,6 @@ function callback.postSolve(fixture_a, fixture_b, contact)
 
 	if a.postSolve then a:postSolve(b.id) end
 	if b.postSolve then b:postSolve(a.id) end
-	--print("Collision detected between " .. a.id .. " and " .. b.id .. ".")
 end
 
 world:setCallbacks(callback.beginContact, callback.endContact, callback.preSolve, callback.postSolve)
