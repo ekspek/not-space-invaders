@@ -1,6 +1,4 @@
 local bullet_invader = require 'entities.bullet_invader'
-local gameover = require 'entities.gameover'
-local debug = require 'entities.debug'
 
 local Player = require 'entities.player'
 local Invader = require 'entities.invader'
@@ -9,6 +7,8 @@ local Border = require 'entities.border'
 local Border_bottom = require 'entities.border_bottom'
 local Border_top = require 'entities.border_top'
 local Bullet = require 'entities.bullet'
+local gameover = require 'entities.gameover'
+local debug = require 'entities.debug'
 
 local entities = {
 	Border(-10, 0, 10, love.graphics.getHeight()),

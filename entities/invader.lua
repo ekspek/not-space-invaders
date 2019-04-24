@@ -36,7 +36,7 @@ function Invader:init(x, y, invader)
 	self.death_timer = 0.5
 	self.step_frame = state.frame
 
-	if self.invader == 1 then
+	if invader == 1 then
 		self.w = 12 * 2
 		self.h = 8 * 2
 	elseif invader == 2 then
