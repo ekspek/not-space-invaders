@@ -73,7 +73,7 @@ function Player:draw()
 	end
 end
 
-function Player:postSolve(self, id)
+function Player:postSolve(id)
 	if id == 'bullet_invader' or id == 'bullet' then
 		self.sound_death:play()
 		state.player.alive = false
