@@ -82,7 +82,7 @@ function Bullet_invader:draw()
 end
 
 function Bullet_invader:postSolve(id)
-	for _, id_list in pairs({'invader1', 'invader2', 'invader3', 'border', 'border_bottom', 'player'}) do
+	for _, id_list in pairs({'invader1', 'invader2', 'invader3', 'border', 'border_bottom', 'player', 'barrier'}) do
 		if id == id_list then
 			self.body:setLinearVelocity(0,0)
 			self.body:setAngularVelocity(0,0)
