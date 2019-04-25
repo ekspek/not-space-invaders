@@ -75,8 +75,7 @@ state.update = function(self, dt)
 			self.invader.direction = 'right'
 		else
 			self.reset = false
-			--self.pace = math.max(1, math.floor((55 / self.invader.count)^1.5 * (1 + ((self.level - 1) * 0.3))))
-			self.pace = 1
+			self.pace = math.max(1, math.floor((55 / self.invader.count)^1.5 * (1 + ((self.level - 1) * 0.3))))
 		end
 	end
 end

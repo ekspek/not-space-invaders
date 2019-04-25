@@ -12,12 +12,20 @@ function Bullet_invader:init(x, y, angle)
 	self.w = 2
 	self.h = 8 * 2
 	self.angle = angle * math.pi / 180
-	self.speed = 200
 	self.remove = false
+	self.speed = 200
 
 	self.quads = {}
 	self.bullet_frame = 0
-	self.chance = math.random(1,3)
+
+	-- The self.type variable contains the type of the bullet fired
+	-- 1 -> bar
+	-- 2 -> wave
+	-- 3 -> mix
+	self.type = math.random(1,3)
+
+	-- The speed of the bullet varies between 150 and 250 pixels per second
+	self.speed = 200 + (math.random() - 0.5) * 50
 
 	self.body = love.physics.newBody(world, self.x, self.y, 'dynamic')
 	self.shape = love.physics.newRectangleShape(self.w, self.h)
@@ -69,12 +77,12 @@ function Bullet_invader:draw()
 	x = x - 2
 
 	love.graphics.setColor(1,1,1,1)
-	if self.chance == 1 then
+	if self.type == 1 then
 		love.graphics.draw(self.image, self.slash, x, y, self.body:getAngle(), 2, 2)
 		love.graphics.draw(self.image, self.bar, x + math.sin(-self.body:getAngle()) * (15 + math.floor(self.bullet_frame) * -5), y + math.cos(-self.body:getAngle()) * (15 + math.floor(self.bullet_frame) * -5), self.body:getAngle(), 2, 2)
-	elseif self.chance == 2 then
+	elseif self.type == 2 then
 		love.graphics.draw(self.image, self.wave[math.floor(self.bullet_frame % 2) + 1], x, y, self.body:getAngle(), 2, 2)
-	elseif self.chance == 3 then
+	elseif self.type == 3 then
 		love.graphics.draw(self.image, self.slash, x, y, self.body:getAngle(), 2, 2)
 		love.graphics.setColor(1,1,1,math.floor(self.bullet_frame % 2))
 		love.graphics.draw(self.image, self.wave[math.floor(self.bullet_frame / 3) + 1], x, y + 4 * math.floor(self.bullet_frame / 3), self.body:getAngle(), 2, 2)
