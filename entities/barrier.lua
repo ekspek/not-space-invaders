@@ -1,6 +1,5 @@
 local Class = require 'libs.hump.class'
 local Entity = require 'entity'
-local state = require 'state'
 local world = require 'world'
 
 local Barrier = Class{ __includes = Entity }

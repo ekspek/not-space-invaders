@@ -1,8 +1,8 @@
+local Timer = require 'libs.hump.timer'
+
 local state = {
 	player = {},
 	invader = {},
-	frame = 0,
-	frame_double = 0,
 	pace = 1, -- Invader speed
 	pace_initial = 1,
 	score1 = 0,
@@ -31,7 +31,6 @@ state.freeze = function(self)
 	self.frozen = true
 	self.pace_initial = self.pace
 	self.pace = 0
-	self.frame = 0
 	self.frame_double = 0
 end
 
@@ -60,11 +59,6 @@ state.update = function(self, dt)
 			end
 		end
 	else
-		-- Determines which frame is active right now (out of 2)
-		-- self.frame.double controls the timing within the frame
-		-- self.frame indicates the current frame
-		self.frame_double = (self.frame_double + dt * self.pace) % 2
-		self.frame = math.floor(self.frame_double)
 
 		-- When the invader count is zero, activates the rest flag,
 		-- increases the player's lives by one and resets the horde

@@ -1,7 +1,6 @@
 local Class = require 'libs.hump.class'
 local Entity = require 'entity'
 
-local state = require 'state'
 local font = require 'font'
 
 local Gameover = Class{ __includes = Entity }

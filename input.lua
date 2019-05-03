@@ -1,18 +1,16 @@
-local state = require 'state'
-
 local pressmap = {
 	escape = function() love.event.quit() end,
-	space = function() state.player.firebuffer = true end,
-	left = function() state.player.left = true end,
-	right = function() state.player.right = true end,
-	f = function() state.player.firehold = true end,
+	space = function() Gamestate.current().player.firebuffer = true end,
+	left = function() Gamestate.current().player.left = true end,
+	right = function() Gamestate.current().player.right = true end,
+	f = function() Gamestate.current().player.firehold = true end,
 }
 
 local releasemap = {
-	space = function() state.player.firebuffer = false end,
-	left = function() state.player.left = false end,
-	right = function() state.player.right = false end,
-	f = function() state.player.firehold = false end,
+	space = function() Gamestate.current().player.firebuffer = false end,
+	left = function() Gamestate.current().player.left = false end,
+	right = function() Gamestate.current().player.right = false end,
+	f = function() Gamestate.current().player.firehold = false end,
 }
 
 local pressmap_joystick = {

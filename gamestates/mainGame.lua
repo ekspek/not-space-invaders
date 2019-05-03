@@ -1,6 +1,5 @@
 Gamestate = require 'libs.hump.gamestate'
 
-local state = require 'state'
 local world = require 'world'
 local input = require 'input'
 local entities = require 'entities'
@@ -12,18 +11,41 @@ local sfx = require 'sfx'
 local mainGame = {}
 
 function mainGame:enter()
-	local step_frame = 0
-
 	love.graphics.setDefaultFilter('linear', 'nearest', 0)
 
 	love.graphics.setBackgroundColor(0,0,0)
 
 	-- Frame change timer
-	self.gametimer = Timer.new()
-	self.gametimer:every(1, function() self:frameChange() end)
+	self.frametimer = Timer.new()
+	self.frametimer:every(1, function() self:frameChange() end)
 
 	-- Horder direction
 	self.invaderdirection = 'right'
+
+	self.player = {}
+	self.invader = {}
+	self.pace = 1
+	self.pace_initial = 1
+	self.score1 = 0
+	self.score2 = 0
+	self.hiscore = 0
+	self.credits = 0
+	self.frozen = false
+	self.gameover = false
+	self.reset = false
+	self.level = 1
+
+	self.player.left = false
+	self.player.right = false
+	self.player.firebuffer = false
+	self.player.bullets = 0
+	self.player.firehold = false
+	self.player.alive = true
+	self.player.lives = 3
+	self.timer = 0
+
+	self.invader.count = 0
+	self.invader.direction = 'right'
 
 	-- Calling each entity's load method
 	for _, entity in ipairs(entities) do
@@ -32,12 +54,7 @@ function mainGame:enter()
 end
 
 function mainGame:update(dt)
-	if state.reset == true then
-		entities.respawnInvaders(dt)
-		state.level = state.level + 1
-	end
-
-	state.invader.count = 0
+	self.invader.count = 0
 	local i = 1
 	while i <= #entities do
 		local entity = entities[i]
@@ -50,30 +67,30 @@ function mainGame:update(dt)
 		-- has been pressed and the current selected entity is the player
 		-- This was necessary to get the player's position
 		if entity.id == 'player' then
-			if state.reset == true then
+			if self.reset == true then
 				entity.body:setPosition(love.graphics.getWidth() / 2 - 16, love.graphics.getHeight() * 0.9)
 			end
 
-			if state.player.firebuffer and state.player.bullets <= 0 and not state.frozen then
+			if self.player.firebuffer and self.player.bullets <= 0 and not self.frozen then
 				table.insert(entities, bullet(math.floor(entity.x + (entity.w / 2)), entity.y - 5))
-				state.player.firebuffer = false
+				self.player.firebuffer = false
 			end
 
 			---[[ debug test option
-			if state.player.firehold and not state.frozen then
+			if self.player.firehold and not self.frozen then
 				table.insert(entities, bullet(math.floor(entity.x + (entity.w / 2)), entity.y - 10))
 			end
 			--]]
 
-			state.player.bullets = 0
+			self.player.bullets = 0
 		end
 
-		if (entity.id == 'invader1' or entity.id == 'invader2' or entity.id == 'invader3') and state.player.alive then
-			state.invader.count = state.invader.count + 1
+		if (entity.id == 'invader1' or entity.id == 'invader2' or entity.id == 'invader3') and self.player.alive then
+			self.invader.count = self.invader.count + 1
 
 			if entity.overflow then
-				state.gameover = true
-				state.player.alive = false
+				self.gameover = true
+				self.player.alive = false
 			end
 
 			-- Invader free space checking mechanism
@@ -115,7 +132,7 @@ function mainGame:update(dt)
 		end
 
 		if entity.id == 'bullet' then
-			state.player.bullets = state.player.bullets + 1
+			self.player.bullets = self.player.bullets + 1
 		end
 
 		if entity.remove then
@@ -125,23 +142,53 @@ function mainGame:update(dt)
 		end
 	end
 
-	-- Code inside this loop is run once per frame (on frame change)
-	-- The speed is determined by state.pace, which specifies the
-	-- changes per second
-	if step_frame ~= state.frame then
-	end
-
-	if state.gameover then
+	if self.gameover then
 		table.insert(entities, gameover())
 	end
 
-	if state.player.alive then
+	if self.player.alive then
 		world:update(dt)
 	end
 
-	state:update(dt)
+	if not self.frozen then
+		self.frametimer:update(dt)
+	end
 
-	self.gametimer:update(dt)
+	if not self.player.alive then
+		self:freeze()
+
+		if not self.gameover then
+			if self.timer < 2 then
+				self.timer = self.timer + dt
+			else
+				self.player.lives = self.player.lives - 1
+
+				if self.player.lives > 0 then
+					self:unfreeze()
+				else
+					self.gameover = true
+				end
+			end
+		end
+	else
+
+		-- When the invader count is zero, activates the reset flag,
+		-- increases the player's lives by one and resets the horde
+		-- direction
+		if self.invader.count <= 0 then
+			self.reset = true
+			self.player.lives = self.player.lives + 1
+			self.invader.direction = 'right'
+		else
+			self.reset = false
+			self.pace = math.max(1, math.floor((55 / self.invader.count)^1.5 * (1 + ((self.level - 1) * 0.3))))
+		end
+	end
+
+	if self.reset == true then
+		entities.respawnInvaders(dt)
+		self.level = self.level + 1
+	end
 
 	-- 30FPS mode
 	--love.timer.sleep(1/30)

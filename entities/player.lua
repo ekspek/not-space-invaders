@@ -1,7 +1,6 @@
 local Class = require 'libs.hump.class'
 local Entity = require 'entity'
 
-local state = require 'state'
 local world = require 'world'
 
 local Player = Class{ __includes = Entity }
@@ -39,15 +38,15 @@ end
 function Player:update(dt)
 	self.x, self.y = self.body:getWorldPoints(self.shape:getPoints())
 
-	if state.player.left == state.player.right or state.frozen then
+	if Gamestate.current().player.left == Gamestate.current().player.right or Gamestate.current().frozen then
 		self.body:setLinearVelocity(0,0)
-	elseif state.player.left then
+	elseif Gamestate.current().player.left then
 		if self.x - self.speed * dt > self.margin then
 			self.body:setLinearVelocity(-self.speed, 0)
 		else
 			self.body:setLinearVelocity(0,0)
 		end
-	elseif state.player.right then
+	elseif Gamestate.current().player.right then
 		if self.x + self.speed * dt < love.graphics.getWidth() - self.w - self.margin then
 			self.body:setLinearVelocity(self.speed, 0)
 		else
@@ -55,7 +54,7 @@ function Player:update(dt)
 		end
 	end
 
-	if not state.player.alive then
+	if not Gamestate.current().player.alive then
 		self.death_frame = (self.death_frame + 12 * dt) % 2
 		self.death_timer = self.death_timer + dt
 	end
@@ -63,7 +62,7 @@ end
 
 function Player:draw()
 	love.graphics.setColor(0,1,0,1)
-	if not state.player.alive then
+	if not Gamestate.current().player.alive then
 		if self.death_timer < 1 then
 			love.graphics.draw(self.image_death, self.quads_death[math.floor(self.death_frame) + 1], self.x, self.y - 3 * 2, nil, 2, 2)
 		end
@@ -76,7 +75,7 @@ end
 function Player:postSolve(id)
 	if id == 'bullet_invader' or id == 'bullet' then
 		self.sound_death:play()
-		state.player.alive = false
+		Gamestate.current().player.alive = false
 	end
 end
 

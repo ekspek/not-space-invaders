@@ -1,7 +1,6 @@
 local Class = require 'libs.hump.class'
 local Entity = require 'entity'
 
-local state = require 'state'
 local world = require 'world'
 local font = require 'font'
 
@@ -29,13 +28,13 @@ function BorderBottom:draw()
 	love.graphics.setColor(0,1,0,1)
 	love.graphics.rectangle('fill', x, y, self.w, 2)
 
-	for i = 1, math.min(8, (state.player.lives - 1)) do
+	for i = 1, math.min(8, (Gamestate.current().player.lives - 1)) do
 		love.graphics.draw(self.image, x + 15 + i * 32, y + 4, nil, 2, 2)
 	end
 
 	love.graphics.setColor(1,1,1,1)
 	love.graphics.setFont(font)
-	love.graphics.print(state.player.lives, x + 8, y + 6)
+	love.graphics.print(Gamestate.current().player.lives, x + 8, y + 6)
 	love.graphics.print("CREDIT 00", x + 300, y + 6)
 end
 

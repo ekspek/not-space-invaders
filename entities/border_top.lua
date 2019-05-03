@@ -1,7 +1,6 @@
 local Class = require 'libs.hump.class'
 local Entity = require 'entity'
 
-local state = require 'state'
 local font = require 'font'
 
 BorderTop = Class{ __includes = Entity }
@@ -32,9 +31,9 @@ function BorderTop:draw()
 	love.graphics.printf("SCORE<1>", 0, measures[3], measures[1], 'center')
 	love.graphics.printf("HI-SCORE", measures[1], measures[3], measures[1], 'center')
 	love.graphics.printf("SCORE<2>", measures[2], measures[3], measures[1], 'center')
-	love.graphics.printf(string.format("%.4d", state.score1), 0, measures[4], measures[1], 'center')
-	love.graphics.printf(string.format("%.4d", state.hiscore), measures[1], measures[4], measures[1], 'center')
-	love.graphics.printf(string.format("%.4d", state.score2), measures[2], measures[4], measures[1], 'center')
+	love.graphics.printf(string.format("%.4d", Gamestate.current().score1), 0, measures[4], measures[1], 'center')
+	love.graphics.printf(string.format("%.4d", Gamestate.current().hiscore), measures[1], measures[4], measures[1], 'center')
+	love.graphics.printf(string.format("%.4d", Gamestate.current().score2), measures[2], measures[4], measures[1], 'center')
 end
 
 return BorderTop
