@@ -12,7 +12,6 @@ function Invader:init(x, y, invader)
 	self.id = 'invader' .. invader
 	self.x = x
 	self.y = y
-	self.step = 1
 
 	-- Flags to warn if the horde needs to change directions,
 	-- NOT if an invader is outside of the screen.
@@ -34,7 +33,6 @@ function Invader:init(x, y, invader)
 	self.overflow = false
 
 	self.death_timer = 0.5
-	self.step_frame = state.frame
 
 	if invader == 1 then
 		self.w = 12 * 2
@@ -82,10 +80,6 @@ function Invader:init(x, y, invader)
 end
 
 function Invader:update(dt)
-	local paceModifier = function(pixels)
-		return math.floor(pixels + (pixels * (state.pace^0.15 - 1)))
-	end
-
 	-- Check if outside of playable area
 	local border_out = 0 -- positive means towards the outside of the screen
 	local border_in = 10 -- positive means towards the inside of the screen
@@ -104,9 +98,8 @@ function Invader:update(dt)
 		or ymin > love.graphics.getHeight() + border_out
 
 	self.overflow = self.overflow or ymax > 450
-
-	self.outside_left = xmin < paceModifier(border_in)
-	self.outside_right = xmax > love.graphics.getWidth() - paceModifier(border_in)
+	self.outside_left = xmin < self.paceModifier(border_in)
+	self.outside_right = xmax > love.graphics.getWidth() - self.paceModifier(border_in)
 
 	-- Resetting the angle when velocity is low
 	local dx, dy = self.body:getLinearVelocity()
@@ -120,18 +113,6 @@ function Invader:update(dt)
 			self.alive = false
 		else
 			self.body:setAngle(0)
-			if self.step_frame ~= state.frame then
-				self.step_frame = state.frame
-
-				local x, y = self.body:getPosition()
-				if state.invader.direction == 'right' then
-					self.body:setPosition(x + paceModifier(2), y)
-				elseif state.invader.direction == 'left' then
-					self.body:setPosition(x - paceModifier(2), y)
-				elseif state.invader.direction == 'down' then
-					self.body:setPosition(x, y + 10)
-				end
-			end
 		end
 	end
 
@@ -174,6 +155,27 @@ function Invader:postSolve(id)
 			end
 		end
 	end
+end
+
+function Invader:frameChange()
+	local dx, dy = self.body:getLinearVelocity()
+	local dv = math.abs(dx) + math.abs(dy)
+	local omega = self.body:getAngularVelocity()
+
+	if dv < 2 and omega < 0.1 and self.health > 0 then
+		local x, y = self.body:getPosition()
+		if state.invader.direction == 'right' then
+			self.body:setPosition(x + self.paceModifier(2), y)
+		elseif state.invader.direction == 'left' then
+			self.body:setPosition(x - self.paceModifier(2), y)
+		elseif state.invader.direction == 'down' then
+			self.body:setPosition(x, y + 10)
+		end
+	end
+end
+
+function Invader.paceModifier(pixels)
+	return math.floor(pixels + (pixels * (state.pace^0.15 - 1)))
 end
 
 return Invader

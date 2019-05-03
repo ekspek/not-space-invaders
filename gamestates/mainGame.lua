@@ -18,6 +18,9 @@ function mainGame:enter()
 
 	love.graphics.setBackgroundColor(0,0,0)
 
+	self.gametimer = Timer.new()
+	self.gametimer:every(1, self.frameChange)
+
 	for _, entity in ipairs(entities) do
 		if entity.load then entity:load() end
 	end
@@ -130,29 +133,6 @@ function mainGame:update(dt)
 	-- The speed is determined by state.pace, which specifies the
 	-- changes per second
 	if step_frame ~= state.frame then
-		step_frame = state.frame
-
-		sfx.invadermove:update()
-
-		if invader_outside_right then
-			if state.invader.direction == 'down' then
-				state.invader.direction = 'left'
-			elseif state.invader.direction == 'right' then
-				state.invader.direction = 'down'
-			end
-				
-			if invader_outside_left then
-				state.invader.direction = 'down'
-			end
-		elseif invader_outside_left then
-			if state.invader.direction == 'down' then
-				state.invader.direction = 'right'
-			elseif state.invader.direction == 'left' then
-				state.invader.direction = 'down'
-			end
-		elseif state.invader.direction == 'down' then
-			state.invader.direction = 'right'
-		end
 	end
 
 	if state.gameover then
@@ -165,8 +145,11 @@ function mainGame:update(dt)
 
 	state:update(dt)
 
+	self.gametimer:update(dt)
+
 	-- 30FPS mode
 	--love.timer.sleep(1/30)
+
 end
 
 function mainGame:draw(dt)
@@ -194,6 +177,34 @@ function mainGame:draw(dt)
 			love.graphics.line(x4, y4, x4 - r * math.sin(theta), y4 + r * math.cos(theta))
 		end
 		--]]
+	end
+end
+
+function mainGame:frameChange()
+	sfx.invadermove:update()
+
+	if invader_outside_right then
+		if state.invader.direction == 'down' then
+			state.invader.direction = 'left'
+		elseif state.invader.direction == 'right' then
+			state.invader.direction = 'down'
+		end
+			
+		if invader_outside_left then
+			state.invader.direction = 'down'
+		end
+	elseif invader_outside_left then
+		if state.invader.direction == 'down' then
+			state.invader.direction = 'right'
+		elseif state.invader.direction == 'left' then
+			state.invader.direction = 'down'
+		end
+	elseif state.invader.direction == 'down' then
+		state.invader.direction = 'right'
+	end
+
+	for _, entity in ipairs(entities) do
+		if entity.frameChange then entity:frameChange() end
 	end
 end
 

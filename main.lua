@@ -1,4 +1,5 @@
 Gamestate = require 'libs.hump.gamestate'
+Timer = require 'libs.hump.timer'
 local input = require 'input'
 
 local mainGame = require 'gamestates.mainGame'
