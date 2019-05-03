@@ -18,18 +18,20 @@ function mainGame:enter()
 
 	love.graphics.setBackgroundColor(0,0,0)
 
+	-- Frame change timer
 	self.gametimer = Timer.new()
-	self.gametimer:every(1, self.frameChange)
+	self.gametimer:every(1, function() self:frameChange() end)
 
+	-- Horder direction
+	self.invaderdirection = 'right'
+
+	-- Calling each entity's load method
 	for _, entity in ipairs(entities) do
 		if entity.load then entity:load() end
 	end
 end
 
 function mainGame:update(dt)
-	local invader_outside_left = false
-	local invader_outside_right = false
-
 	if state.reset == true then
 		entities.respawnInvaders(dt)
 		state.level = state.level + 1
@@ -68,12 +70,6 @@ function mainGame:update(dt)
 
 		if (entity.id == 'invader1' or entity.id == 'invader2' or entity.id == 'invader3') and state.player.alive then
 			state.invader.count = state.invader.count + 1
-
-			if entity.outside_right and entity.health > 0 then
-				invader_outside_right = true
-			elseif entity.outside_left and entity.health > 0 then
-				invader_outside_left = true
-			end
 
 			if entity.overflow then
 				state.gameover = true
@@ -183,27 +179,36 @@ end
 function mainGame:frameChange()
 	sfx.invadermove:update()
 
+	local invader_outside_left = false
+	local invader_outside_right = false
+
+	for _, entity in ipairs(entities) do
+		if entity.outside_right then invader_outside_right = entity.outside_right end
+		if entity.outside_left then invader_outside_left = entity.outside_left end
+	end
+
 	if invader_outside_right then
-		if state.invader.direction == 'down' then
-			state.invader.direction = 'left'
-		elseif state.invader.direction == 'right' then
-			state.invader.direction = 'down'
+		if self.invaderdirection == 'down' then
+			self.invaderdirection = 'left'
+		elseif self.invaderdirection == 'right' then
+			self.invaderdirection = 'down'
 		end
 			
 		if invader_outside_left then
-			state.invader.direction = 'down'
+			self.invaderdirection = 'down'
 		end
 	elseif invader_outside_left then
-		if state.invader.direction == 'down' then
-			state.invader.direction = 'right'
-		elseif state.invader.direction == 'left' then
-			state.invader.direction = 'down'
+		if self.invaderdirection == 'down' then
+			self.invaderdirection = 'right'
+		elseif self.invaderdirection == 'left' then
+			self.invaderdirection = 'down'
 		end
-	elseif state.invader.direction == 'down' then
-		state.invader.direction = 'right'
+	elseif self.invaderdirection == 'down' then
+		self.invaderdirection = 'right'
 	end
 
 	for _, entity in ipairs(entities) do
+		if entity.direction then entity.direction = self.invaderdirection end
 		if entity.frameChange then entity:frameChange() end
 	end
 end
